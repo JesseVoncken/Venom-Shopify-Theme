@@ -312,12 +312,6 @@
     padding-top: 3rem; /* Add padding so the links aren't hidden by the "X" button */
   }
 
-  /* The magic: When details is [open], slide it in */
-  details[open] > .menu-drawer {
-    transform: translateX(0);
-    visibility: visible;
-  }
-
   /* Style the links inside */
   .menu-drawer__menu-item {
     display: block;
@@ -329,31 +323,18 @@
     cursor: pointer;
   }
 
-  /* 1. Base State (Always exists, but hidden & clickable-through) */
-  .header__icon--menu::before {
-    content: '';
-    display: block; /* Always block so it can fade */
-    position: fixed;
+  /* Target the pseudo-element when the menu is OPEN */
+  .header__icon--menu[aria-expanded='true']::before {
+    content: ''; /* Required for pseudo-elements */
+    display: block; /* Make sure it's visible */
+    position: fixed; /* Locks it to the screen */
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    z-index: 50;
-    backdrop-filter: blur(2px);
-
-    /* The Animation Logic */
-    opacity: 0; /* Invisible */
-    visibility: hidden; /* Ignored by screen readers/clicks */
-    pointer-events: none; /* Lets you click items "under" it when closed */
-    transition: opacity 0.3s ease, visibility 0.3s ease; /* Matches drawer speed */
-  }
-
-  /* 2. Active State (Visible & catching clicks) */
-  .header__icon--menu[aria-expanded='true']::before {
-    opacity: 1; /* Fully dark */
-    visibility: visible; /* Active */
-    pointer-events: auto; /* Now it catches clicks to close the menu */
+    width: 100vw; /* Full screen width */
+    height: 100vh; /* Full screen height */
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent black */
+    z-index: 50; /* Lower than the drawer (100) but higher than the site */
+    backdrop-filter: blur(2px); /* Optional: Adds a nice blur effect to the background */
   }
 
   .menu-drawer__close-button,
