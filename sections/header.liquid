@@ -1,121 +1,65 @@
-{% comment %}
-  Structure: Flexbox with 3 zones (Left, Center, Right)
-  Overlay: Achieved via CSS position: absolute
-{% endcomment %}
-
 <header class="custom-header">
   <div class="header-container page-width">
     <div class="header__left">
-      <header-drawer data-breakpoint="tablet">
-        <details id="Details-menu-drawer-container" class="menu-drawer-container">
-          <summary class="header__icon header__icon--menu header__icon--summary link focus-inset" aria-label="Menu">
-            <span>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                class="icon icon-hamburger"
-              >
-                <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
-              </svg>
+      <details id="Details-menu-drawer-container" class="menu-drawer-container">
+        <summary class="header__icon header__icon--menu link focus-inset" aria-label="Menu">
+          <span>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              class="icon icon-hamburger"
+            >
+              <line x1="3" y1="12" x2="21" y2="12"></line><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="18" x2="21" y2="18"></line>
+            </svg>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              class="icon icon-close"
+              fill="none"
+              viewBox="0 0 24 24"
+              stroke="currentColor"
+              style="display:none;"
+            >
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          </span>
+        </summary>
 
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                class="icon icon-close"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-                style="display:none;"
-              >
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
-              </svg>
-            </span>
-          </summary>
-
-          <div id="menu-drawer" class="menu-drawer motion-reduce" tabindex="-1">
-            <div class="menu-drawer__inner-container">
-              <div class="menu-drawer__navigation-container">
-                <nav class="menu-drawer__navigation">
-                  <ul class="menu-drawer__menu list-menu" role="list">
-                    {%- for link in section.settings.menu.links -%}
-                      <li>
-                        {%- if link.links != blank -%}
-                          <details id="Details-menu-drawer-menu-item-{{ forloop.index }}">
-                            <summary class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.child_active %} menu-drawer__menu-item--active{% endif %}">
-                              {{ link.title | escape }}
-                              <svg
-                                viewBox="0 0 14 10"
-                                fill="none"
-                                aria-hidden="true"
-                                focusable="false"
-                                role="presentation"
-                                class="icon icon-arrow"
-                                style="width: 10px;"
-                              >
-                                <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor">
-                              </svg>
-                            </summary>
-                            <div
-                              id="link-{{ link.title | escape }}"
-                              class="menu-drawer__submenu has-submenu gradient motion-reduce"
-                              tabindex="-1"
-                            >
-                              <div class="menu-drawer__inner-submenu">
-                                <button
-                                  class="menu-drawer__close-button link link--text focus-inset-expanded"
-                                  aria-expanded="true"
-                                >
-                                  <svg
-                                    viewBox="0 0 14 10"
-                                    fill="none"
-                                    aria-hidden="true"
-                                    focusable="false"
-                                    role="presentation"
-                                    class="icon icon-arrow"
-                                    style="transform: rotate(180deg); width: 10px; margin-right: 10px;"
-                                  >
-                                    <path fill-rule="evenodd" clip-rule="evenodd" d="M8.537.808a.5.5 0 01.817-.162l4 4a.5.5 0 010 .708l-4 4a.5.5 0 11-.708-.708L11.793 5.5H1a.5.5 0 010-1h10.793L8.646 1.354a.5.5 0 01-.109-.546z" fill="currentColor">
-                                  </svg>
-                                  {{ link.title | escape }}
-                                </button>
-                                <ul class="menu-drawer__menu list-menu" role="list" tabindex="-1">
-                                  {%- for childlink in link.links -%}
-                                    <li>
-                                      <a
-                                        href="{{ childlink.url }}"
-                                        class="menu-drawer__menu-item link link--text list-menu__item focus-inset{% if childlink.current %} menu-drawer__menu-item--active{% endif %}"
-                                      >
-                                        {{ childlink.title | escape }}
-                                      </a>
-                                    </li>
-                                  {%- endfor -%}
-                                </ul>
-                              </div>
-                            </div>
-                          </details>
-                        {%- else -%}
+        <div id="menu-drawer" class="menu-drawer" tabindex="-1">
+          <nav class="menu-drawer__navigation">
+            <ul class="menu-drawer__menu list-menu" role="list">
+              {%- for link in section.settings.menu.links -%}
+                <li>
+                  <a href="{{ link.url }}" class="menu-drawer__menu-item link link--text">
+                    {{ link.title | escape }}
+                  </a>
+                  {%- if link.links != blank -%}
+                    <ul class="menu-drawer__submenu" style="padding-left: 20px;">
+                      {%- for childlink in link.links -%}
+                        <li>
                           <a
-                            href="{{ link.url }}"
-                            class="menu-drawer__menu-item list-menu__item link link--text focus-inset{% if link.current %} menu-drawer__menu-item--active{% endif %}"
+                            href="{{ childlink.url }}"
+                            class="menu-drawer__menu-item link link--text"
+                            style="font-size: 1.4rem;"
                           >
-                            {{ link.title | escape }}
+                            {{- childlink.title | escape -}}
                           </a>
-                        {%- endif -%}
-                      </li>
-                    {%- endfor -%}
-                  </ul>
-                </nav>
-              </div>
-            </div>
-          </div>
-        </details>
-      </header-drawer>
+                        </li>
+                      {%- endfor -%}
+                    </ul>
+                  {%- endif -%}
+                </li>
+              {%- endfor -%}
+            </ul>
+          </nav>
+        </div>
+      </details>
 
       <form action="{{ routes.search_url }}" method="get" role="search" class="header__search">
         <button type="submit" class="search-icon">
@@ -133,12 +77,7 @@
             <circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line>
           </svg>
         </button>
-        <input
-          type="text"
-          name="q"
-          placeholder="Search Product..."
-          class="search-input"
-        >
+        <input type="text" name="q" placeholder="Search Product..." class="search-input">
       </form>
     </div>
 
@@ -150,7 +89,6 @@
             alt="{{ shop.name }}"
             width="{{ section.settings.logo_width }}"
             height="auto"
-            loading="eager"
           >
         {% else %}
           <span class="h2" style="color: white;">{{ shop.name }}</span>
@@ -176,8 +114,7 @@
           </svg>
         </a>
       {% endif %}
-
-      <a href="{{ routes.cart_url }}" class="header__icon" id="cart-icon-bubble">
+      <a href="{{ routes.cart_url }}" class="header__icon">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="24"
@@ -191,10 +128,9 @@
         >
           <circle cx="9" cy="21" r="1"></circle><circle cx="20" cy="21" r="1"></circle><path d="M1 1h4l2.68 13.39a2 2 0 0 0 2 1.61h9.72a2 2 0 0 0 2-1.61L23 6H6"></path>
         </svg>
-
         {% if cart.item_count > 0 %}
           <div class="cart-count-bubble">
-            <span aria-hidden="true">{{ cart.item_count }}</span>
+            <span>{{ cart.item_count }}</span>
           </div>
         {% endif %}
       </a>
@@ -203,25 +139,22 @@
 </header>
 
 <style>
-  /* 1. The Overlay Magic */
+  /* --- LAYOUT --- */
   .custom-header {
-    position: absolute; /* This pulls it out of flow */
+    position: absolute;
     top: 0;
     left: 0;
     width: 100%;
-    z-index: 10; /* Ensures it sits on top of Hero */
+    z-index: 10;
     padding: 15px 0;
-    background: transparent; /* No background color */
+    background: transparent;
   }
-
-  /* Layout */
   .header-container {
     display: flex;
     justify-content: space-between;
     align-items: center;
     padding: 0 2rem;
   }
-
   .header__left,
   .header__right {
     flex: 1;
@@ -229,37 +162,47 @@
     align-items: center;
     gap: 15px;
   }
-
   .header__right {
     justify-content: flex-end;
   }
-
   .header__center {
     flex: 1;
     text-align: center;
   }
 
-  /* Icons */
+  /* --- ICONS & TEXT --- */
   .header__icon {
     background: none;
     border: none;
     cursor: pointer;
-    color: white; /* Matches your image */
+    color: white;
     display: flex;
     align-items: center;
   }
+  .icon-close {
+    display: none;
+  }
+  details[open] .icon-hamburger {
+    display: none;
+  }
+  details[open] .icon-close {
+    display: block;
+    position: fixed;
+    top: 25px;
+    left: 270px;
+    z-index: 102;
+  }
 
-  /* Search Bar (Pill Shape) */
+  /* --- SEARCH BAR --- */
   .header__search {
     display: flex;
     align-items: center;
-    background: rgba(0, 0, 0, 0.4); /* Translucent dark background */
+    background: rgba(0, 0, 0, 0.4);
     border: 1px solid rgba(255, 255, 255, 0.2);
-    border-radius: 50px; /* Pill shape */
+    border-radius: 50px;
     padding: 5px 15px;
     width: 250px;
   }
-
   .search-input {
     background: transparent;
     border: none;
@@ -267,18 +210,19 @@
     width: 100%;
     margin-left: 8px;
     font-size: 14px;
-  }
-
-  .search-input:focus {
     outline: none;
   }
-
   .search-input::placeholder {
     color: rgba(255, 255, 255, 0.7);
   }
-
+  .search-icon {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+  }
   .cart-count-bubble {
-    background-color: #0099ff; /* That bright blue from your logo */
+    background-color: #0099ff;
     color: white;
     font-size: 10px;
     border-radius: 50%;
@@ -292,45 +236,35 @@
     left: -5px;
   }
 
-  .search-icon {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-  }
-
+  /* --- DRAWER (SIDEBAR) --- */
   .menu-drawer {
-    position: fixed; /* Changed from absolute */
-    top: 0; /* Starts at the very top */
+    position: fixed;
+    top: 0;
     left: 0;
-    width: 30rem; /* Adjust width as needed */
-    height: 100vh; /* Full viewport height */
-    background-color: #000; /* Black background like your example */
-    z-index: 100; /* High z-index to sit ON TOP of everything */
+    width: 30rem;
+    height: 100vh;
+    background-color: #000;
+    z-index: 101;
+    padding-top: 5rem;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
-    padding-top: 3rem; /* Add padding so the links aren't hidden by the "X" button */
   }
-
-  /* The magic: When details is [open], slide it in */
   details[open] > .menu-drawer {
     transform: translateX(0);
-    visibility: visible;
   }
 
-  /* Style the links inside */
   .menu-drawer__menu-item {
     display: block;
-    padding: 1.5rem 0;
+    padding: 1.5rem 2rem;
     text-decoration: none;
     font-size: 1.8rem;
-    color: white; /* Force black text inside drawer */
-    border-bottom: 1px solid #f2f2f2;
-    cursor: pointer;
+    color: white;
+    border-bottom: 1px solid #333;
   }
 
-  /* 1. Base State (Hidden, but ready) */
-  .menu-drawer-container > summary::before {
+  /* --- OVERLAY (The Magic Fix) --- */
+  /* We use the summary::before pseudo-element to create the full screen backdrop */
+  details > summary::before {
     content: '';
     display: block;
     position: fixed;
@@ -339,31 +273,18 @@
     width: 100vw;
     height: 100vh;
     background: rgba(0, 0, 0, 0.7);
-    z-index: 50; /* Behind the menu (100) but above the content */
     backdrop-filter: blur(2px);
-
-    /* Animation Setup */
+    z-index: 50;
     opacity: 0;
     visibility: hidden;
-    pointer-events: none; /* Allows clicking through it when closed */
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
-  /* 2. Active State (When the <details> tag has the 'open' attribute) */
+  /* When open, show overlay and make it clickable (pointer-events: auto) */
   details[open] > summary::before {
     opacity: 1;
     visibility: visible;
-    pointer-events: auto; /* Catches clicks to close */
-  }
-
-  .menu-drawer__close-button,
-  .icon-close {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-    color: white; /* Ensure it's visible on black background */
-    z-index: 101;
-    cursor: pointer;
+    cursor: default;
   }
 </style>
 
@@ -371,27 +292,9 @@
 {
   "name": "Header",
   "settings": [
-    {
-      "type": "image_picker",
-      "id": "logo",
-      "label": "Logo Image"
-    },
-    {
-      "type": "range",
-      "id": "logo_width",
-      "min": 50,
-      "max": 250,
-      "step": 5,
-      "default": 100,
-      "unit": "px",
-      "label": "Logo width"
-    },
-    {
-      "type": "link_list",
-      "id": "menu",
-      "default": "main-menu",
-      "label": "Main Menu"
-    }
+    { "type": "image_picker", "id": "logo", "label": "Logo" },
+    { "type": "range", "id": "logo_width", "min": 50, "max": 250, "step": 5, "default": 100, "label": "Width" },
+    { "type": "link_list", "id": "menu", "default": "main-menu", "label": "Menu" }
   ]
 }
 {% endschema %}
