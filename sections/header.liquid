@@ -329,19 +329,31 @@
     cursor: pointer;
   }
 
-  /* Target the pseudo-element when the menu is OPEN */
-  .header__icon--menu[aria-expanded='true']::before {
-    content: ''; /* Required for pseudo-elements */
-    display: block; /* Make sure it's visible */
-    position: fixed; /* Locks it to the screen */
+  /* 1. Base State (Always exists, but hidden & clickable-through) */
+  .header__icon--menu::before {
+    content: '';
+    display: block; /* Always block so it can fade */
+    position: fixed;
     top: 0;
     left: 0;
-    width: 100vw; /* Full screen width */
-    height: 100vh; /* Full screen height */
-    transition: transform 0.3s ease;
-    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent black */
-    z-index: 50; /* Lower than the drawer (100) but higher than the site */
-    backdrop-filter: blur(2px); /* Optional: Adds a nice blur effect to the background */
+    width: 100vw;
+    height: 100vh;
+    background: rgba(0, 0, 0, 0.7);
+    z-index: 50;
+    backdrop-filter: blur(2px);
+
+    /* The Animation Logic */
+    opacity: 0; /* Invisible */
+    visibility: hidden; /* Ignored by screen readers/clicks */
+    pointer-events: none; /* Lets you click items "under" it when closed */
+    transition: opacity 0.3s ease, visibility 0.3s ease; /* Matches drawer speed */
+  }
+
+  /* 2. Active State (Visible & catching clicks) */
+  .header__icon--menu[aria-expanded='true']::before {
+    opacity: 1; /* Fully dark */
+    visibility: visible; /* Active */
+    pointer-events: auto; /* Now it catches clicks to close the menu */
   }
 
   .menu-drawer__close-button,
