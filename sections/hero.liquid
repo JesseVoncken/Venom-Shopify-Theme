@@ -1,0 +1,193 @@
+{% comment %}
+  Section: Venom Hero Banner
+  Description: A full-width hero banner with a background image, centered text, and a button, styled exactly like the reference image.
+{% endcomment %}
+
+<div class="venom-hero-section">
+  <div class="venom-hero-bg">
+    {%- if section.settings.image != blank -%}
+      <img
+        src="{{ section.settings.image | image_url: width: 1920 }}"
+        alt="{{ section.settings.heading | escape }}"
+        width="1920"
+        height="600"
+        loading="eager"
+        class="venom-hero-image"
+      >
+    {%- else -%}
+      {{ 'lifestyle-1' | placeholder_svg_tag: 'venom-hero-image placeholder' }}
+    {%- endif -%}
+  </div>
+  <div class="venom-hero-content page-width">
+    <div class="venom-subheading-container">
+      <span class="venom-subheading">{{ section.settings.subheading | escape }}</span>
+    </div>
+    <h1 class="venom-heading">{{ section.settings.heading | escape | newline_to_br }}</h1>
+    <a href="{{ section.settings.button_url | default: '#' }}" class="venom-button">
+      {{ section.settings.button_label | escape }}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        width="16"
+        height="16"
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+        stroke-linejoin="round"
+        class="feather feather-chevron-right"
+      >
+        <polyline points="9 18 15 12 9 6"></polyline>
+      </svg>
+    </a>
+  </div>
+</div>
+
+<style>
+  .venom-hero-section {
+    position: relative;
+    height: 600px; /* Adjust height as needed */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    color: white;
+    overflow: hidden;
+  }
+
+  .venom-hero-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.5); /* Dark overlay for text readability */
+    z-index: 1;
+  }
+
+  .venom-hero-bg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  .venom-hero-image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .venom-hero-image.placeholder {
+    background-color: #333;
+    fill: #555;
+  }
+
+  .venom-hero-content {
+    position: relative;
+    z-index: 2;
+    max-width: 800px;
+  }
+
+  .venom-subheading-container {
+    margin-bottom: 20px;
+  }
+
+  .venom-subheading {
+    display: inline-block;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    letter-spacing: 2px;
+    color: #007bff; /* Blue color */
+    border-bottom: 2px solid #007bff;
+    padding-bottom: 5px;
+  }
+
+  .venom-heading {
+    font-size: 64px;
+    font-weight: 900;
+    text-transform: uppercase;
+    line-height: 1.1;
+    margin-bottom: 40px;
+    color: white;
+  }
+
+  .venom-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 15px 30px;
+    background-color: #007bff; /* Blue color */
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+  }
+
+  .venom-button:hover {
+    background-color: #0056b3; /* Darker blue on hover */
+  }
+
+  .venom-button svg {
+    margin-left: 10px;
+  }
+
+  @media (max-width: 768px) {
+    .venom-hero-section {
+      height: 400px;
+    }
+    .venom-heading {
+      font-size: 36px;
+    }
+    .venom-button {
+      padding: 12px 24px;
+      font-size: 14px;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Venom Hero Banner",
+  "settings": [
+    {
+      "type": "image_picker",
+      "id": "image",
+      "label": "Background Image"
+    },
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "VENOMCBW"
+    },
+    {
+      "type": "textarea",
+      "id": "heading",
+      "label": "Heading",
+      "default": "PREMIUM FIGURE SOLUTIONS"
+    },
+    {
+      "type": "url",
+      "id": "button_url",
+      "label": "Button Link"
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "BROWSE NOW"
+    }
+  ],
+  "presets": [
+    {
+      "name": "Venom Hero Banner"
+    }
+  ]
+}
+{% endschema %}

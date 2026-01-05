@@ -1,0 +1,233 @@
+{% comment %}
+  Section: Category Marquee Slider (Dynamic)
+  Description: Automatically pulls data from selected Collections.
+{% endcomment %}
+
+<div class="category-marquee-section">
+  <div class="marquee-container">
+    <div class="marquee-content">
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+
+        {%- comment %} Determine Data: Use manual overrides if provided, otherwise fallback to Collection data {%- endcomment %}
+        {%- assign title = block.settings.title | default: collection.title | default: 'Collection Name' -%}
+        {%- assign link = collection.url | default: '#' -%}
+
+        {%- comment %} Image Logic: Manual Image > Collection Image > First Product Image > Placeholder {%- endcomment %}
+        {%- assign image = block.settings.image -%}
+        {%- if image == blank and collection.image != blank -%}
+          {%- assign image = collection.image -%}
+        {%- elsif image == blank and collection.products.first.featured_image != blank -%}
+          {%- assign image = collection.products.first.featured_image -%}
+        {%- endif -%}
+
+        <div class="marquee-block" {{ block.shopify_attributes }}>
+          <a href="{{ link }}" class="marquee-block__link">
+            <div class="marquee-block__image-wrapper">
+              {%- if image != blank -%}
+                <img
+                  src="{{ image | image_url: width: 100 }}"
+                  alt="{{ title | escape }}"
+                  class="marquee-block__image"
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                >
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'marquee-block__image placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="marquee-block__content">
+              <h3 class="marquee-block__title">{{ title | escape }}</h3>
+              <span class="marquee-block__button">BROWSE</span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+
+      {%- for block in section.blocks -%}
+        {%- assign collection = block.settings.collection -%}
+        {%- assign title = block.settings.title | default: collection.title | default: 'Collection Name' -%}
+        {%- assign link = collection.url | default: '#' -%}
+        {%- assign image = block.settings.image -%}
+        {%- if image == blank and collection.image != blank -%}
+          {%- assign image = collection.image -%}
+        {%- elsif image == blank and collection.products.first.featured_image != blank -%}
+          {%- assign image = collection.products.first.featured_image -%}
+        {%- endif -%}
+
+        <div class="marquee-block" aria-hidden="true">
+          <a href="{{ link }}" class="marquee-block__link">
+            <div class="marquee-block__image-wrapper">
+              {%- if image != blank -%}
+                <img
+                  src="{{ image | image_url: width: 100 }}"
+                  alt="{{ title | escape }}"
+                  class="marquee-block__image"
+                  loading="lazy"
+                  width="80"
+                  height="80"
+                >
+              {%- else -%}
+                {{ 'collection-1' | placeholder_svg_tag: 'marquee-block__image placeholder' }}
+              {%- endif -%}
+            </div>
+            <div class="marquee-block__content">
+              <h3 class="marquee-block__title">{{ title | escape }}</h3>
+              <span class="marquee-block__button">BROWSE</span>
+            </div>
+          </a>
+        </div>
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .category-marquee-section {
+    background-color: #003366;
+    padding: 20px 0;
+    overflow: hidden;
+  }
+
+  .marquee-container {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+  }
+
+  .marquee-content {
+    display: inline-flex;
+    animation: marquee {{ section.settings.speed }}s linear infinite;
+  }
+
+  .marquee-container:hover .marquee-content {
+    animation-play-state: paused;
+  }
+
+  .marquee-block {
+    flex: 0 0 auto;
+    width: 300px;
+    margin-right: 20px;
+    background-color: #0a2342;
+    border-radius: 8px;
+    overflow: hidden;
+  }
+
+  .marquee-block__link {
+    display: flex;
+    align-items: center;
+    padding: 15px;
+    text-decoration: none;
+    color: white;
+  }
+
+  .marquee-block__image-wrapper {
+    flex: 0 0 80px;
+    height: 80px;
+    margin-right: 15px;
+    border-radius: 8px;
+    overflow: hidden;
+    background-color: #1c3a5e;
+  }
+
+  .marquee-block__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  .marquee-block__image.placeholder {
+    background-color: #1c3a5e;
+    fill: #3a5a85;
+    width: 100%;
+    height: 100%;
+  }
+
+  .marquee-block__content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+
+  .marquee-block__title {
+    margin: 0 0 10px 0;
+    font-size: 16px;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: normal;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  .marquee-block__button {
+    display: inline-block;
+    padding: 8px 16px;
+    background-color: white;
+    color: #0a2342;
+    font-size: 12px;
+    font-weight: bold;
+    text-transform: uppercase;
+    border-radius: 4px;
+    text-align: center;
+    width: fit-content;
+  }
+
+  @keyframes marquee {
+    0% { transform: translateX(0); }
+    100% { transform: translateX(-50%); }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "Category Marquee",
+  "settings": [
+    {
+      "type": "range",
+      "id": "speed",
+      "min": 10,
+      "max": 60,
+      "step": 5,
+      "label": "Scroll Speed (seconds)",
+      "default": 30
+    }
+  ],
+  "blocks": [
+    {
+      "type": "category",
+      "name": "Collection Block",
+      "settings": [
+        {
+          "type": "collection",
+          "id": "collection",
+          "label": "Pick Collection"
+        },
+        {
+          "type": "header",
+          "content": "Overrides (Optional)"
+        },
+        {
+          "type": "text",
+          "id": "title",
+          "label": "Custom Title",
+          "info": "Leave blank to use Collection title"
+        },
+        {
+          "type": "image_picker",
+          "id": "image",
+          "label": "Custom Image",
+          "info": "Leave blank to use Collection image"
+        }
+      ]
+    }
+  ],
+  "presets": [
+    {
+      "name": "Category Marquee",
+      "blocks": [{ "type": "category" }, { "type": "category" }, { "type": "category" }]
+    }
+  ]
+}
+{% endschema %}
