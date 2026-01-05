@@ -1,6 +1,6 @@
 {% comment %}
-  Section: Venom Hero Banner
-  Description: A full-width hero banner with a background image, centered text, and a button, styled exactly like the reference image.
+  Section: Venom Hero Banner with Blue Glow
+  Description: Full-width hero with background image, centered text, button, and a dark-to-blue gradient overlay.
 {% endcomment %}
 
 <div class="venom-hero-section">
@@ -55,6 +55,7 @@
     overflow: hidden;
   }
 
+  /* THIS IS THE PART THAT CHANGED FOR THE GLOW */
   .venom-hero-section::before {
     content: '';
     position: absolute;
@@ -62,8 +63,15 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.5); /* Dark overlay for text readability */
     z-index: 1;
+    /* The gradient: Dark at top (0%), transitioning to Blue at bottom (100%) */
+    background: linear-gradient(
+      to bottom,
+      rgba(0, 0, 0, 0.6) 0%,
+      /* Dark overlay at top for text contrast */ rgba(0, 0, 0, 0.3) 50%,
+      /* Thins out in the middle so the image shows */ rgba(0, 123, 255, 0.5) 100%
+        /* Your brand blue (007bff) at 50% opacity at bottom */
+    );
   }
 
   .venom-hero-bg {
@@ -92,7 +100,7 @@
   }
 
   .venom-subheading-container {
-    margin-bottom: 5px;
+    margin-bottom: 20px;
   }
 
   .venom-subheading {
@@ -113,7 +121,6 @@
     line-height: 1.1;
     margin-bottom: 40px;
     color: white;
-    margin-top: 20px;
   }
 
   .venom-button {
