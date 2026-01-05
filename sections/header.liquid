@@ -312,6 +312,12 @@
     padding-top: 3rem; /* Add padding so the links aren't hidden by the "X" button */
   }
 
+  /* The magic: When details is [open], slide it in */
+  details[open] > .menu-drawer {
+    transform: translateX(0);
+    visibility: visible;
+  }
+
   /* Style the links inside */
   .menu-drawer__menu-item {
     display: block;
