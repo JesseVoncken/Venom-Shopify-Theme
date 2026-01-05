@@ -298,20 +298,17 @@
     color: white;
   }
 
-  /* Ensure the drawer covers the screen when open */
   .menu-drawer {
-    position: absolute;
-    top: 100%; /* Starts right below the header */
+    position: fixed; /* Changed from absolute */
+    top: 0; /* Starts at the very top */
     left: 0;
-    width: 30rem; /* Width of the drawer */
-    background-color: rgb(var(--color-background));
-    height: 100vh;
-    z-index: 99;
-    transform: translateX(-100%); /* Hide off-screen left */
+    width: 30rem; /* Adjust width as needed */
+    height: 100vh; /* Full viewport height */
+    background-color: #000; /* Black background like your example */
+    z-index: 100; /* High z-index to sit ON TOP of everything */
+    transform: translateX(-100%);
     transition: transform 0.3s ease;
-    visibility: hidden;
-    border-right: 1px solid rgba(0, 0, 0, 0.1);
-    padding: 2rem;
+    padding-top: 3rem; /* Add padding so the links aren't hidden by the "X" button */
   }
 
   /* The magic: When details is [open], slide it in */
@@ -326,8 +323,27 @@
     padding: 1.5rem 0;
     text-decoration: none;
     font-size: 1.8rem;
-    color: black; /* Force black text inside drawer */
+    color: white; /* Force black text inside drawer */
     border-bottom: 1px solid #f2f2f2;
+  }
+
+  /* Remove the default Dawn menu backdrop "cube" */
+  .header__icon--menu::before {
+    display: none !important;
+  }
+
+  /* Target the pseudo-element when the menu is OPEN */
+  .header__icon--menu[aria-expanded='true']::before {
+    content: ''; /* Required for pseudo-elements */
+    display: block; /* Make sure it's visible */
+    position: fixed; /* Locks it to the screen */
+    top: 0;
+    left: 0;
+    width: 100vw; /* Full screen width */
+    height: 100vh; /* Full screen height */
+    background: rgba(0, 0, 0, 0.7); /* Dark semi-transparent black */
+    z-index: 50; /* Lower than the drawer (100) but higher than the site */
+    backdrop-filter: blur(2px); /* Optional: Adds a nice blur effect to the background */
   }
 </style>
 
