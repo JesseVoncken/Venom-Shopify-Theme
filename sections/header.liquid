@@ -193,28 +193,6 @@
     z-index: 102;
   }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  .icon-close {
-    display: none;
-  }
-  /* When open, hide hamburger, show X */
-  details[open] .icon-hamburger {
-    display: none;
-  }
-  details[open] .icon-close {
-    display: block;
-    position: fixed;
-    top: 25px;
-    left: 270px;
-    z-index: 200;
-    pointer-events: none;
-  }
-
-=======
->>>>>>> origin/main
->>>>>>> origin/main
   /* --- SEARCH BAR --- */
   .header__search {
     display: flex;
@@ -266,15 +244,7 @@
     width: 30rem;
     height: 100vh;
     background-color: #000;
-<<<<<<< HEAD
     z-index: 101;
-=======
-<<<<<<< HEAD
-    z-index: 150;
-=======
-    z-index: 101;
->>>>>>> origin/main
->>>>>>> origin/main
     padding-top: 5rem;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -282,14 +252,7 @@
   details[open] > .menu-drawer {
     transform: translateX(0);
   }
-<<<<<<< HEAD
 
-=======
-<<<<<<< HEAD
-=======
-
->>>>>>> origin/main
->>>>>>> origin/main
   .menu-drawer__menu-item {
     display: block;
     padding: 1.5rem 2rem;
@@ -300,15 +263,7 @@
   }
 
   /* --- OVERLAY (The Magic Fix) --- */
-<<<<<<< HEAD
   /* We use the summary::before pseudo-element to create the full screen backdrop */
-=======
-<<<<<<< HEAD
-  /* We target the summary directly */
-=======
-  /* We use the summary::before pseudo-element to create the full screen backdrop */
->>>>>>> origin/main
->>>>>>> origin/main
   details > summary::before {
     content: '';
     display: block;
@@ -319,39 +274,16 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(2px);
-<<<<<<< HEAD
     z-index: 50;
-=======
-<<<<<<< HEAD
-    z-index: 100; /* High z-index */
-
-    /* Animation settings */
-=======
-    z-index: 50;
->>>>>>> origin/main
->>>>>>> origin/main
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
-<<<<<<< HEAD
-=======
-<<<<<<< HEAD
-  /* Triggers when open */
-  details[open] > summary::before {
-    opacity: 1 !important;
-    visibility: visible !important;
-=======
->>>>>>> origin/main
   /* When open, show overlay and make it clickable (pointer-events: auto) */
   details[open] > summary::before {
     opacity: 1;
     visibility: visible;
-<<<<<<< HEAD
-=======
->>>>>>> origin/main
->>>>>>> origin/main
     cursor: default;
   }
 </style>
