@@ -327,11 +327,6 @@
     border-bottom: 1px solid #f2f2f2;
   }
 
-  /* Remove the default Dawn menu backdrop "cube" */
-  .header__icon--menu::before {
-    display: none !important;
-  }
-
   /* Target the pseudo-element when the menu is OPEN */
   .header__icon--menu[aria-expanded='true']::before {
     content: ''; /* Required for pseudo-elements */
