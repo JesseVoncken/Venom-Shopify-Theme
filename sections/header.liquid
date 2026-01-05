@@ -340,6 +340,16 @@
     z-index: 50; /* Lower than the drawer (100) but higher than the site */
     backdrop-filter: blur(2px); /* Optional: Adds a nice blur effect to the background */
   }
+
+  .menu-drawer__close-button,
+  .icon-close {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    color: white; /* Ensure it's visible on black background */
+    z-index: 101;
+    cursor: pointer;
+  }
 </style>
 
 {% schema %}
