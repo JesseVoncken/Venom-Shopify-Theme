@@ -178,15 +178,10 @@
     color: white;
     display: flex;
     align-items: center;
-    /* SAFETY LOCK 1: Allow the overlay to spill out of the button */
-    overflow: visible !important;
-    position: static; /* SAFETY LOCK 2: Prevents relative positioning from trapping the fixed overlay */
   }
-
   .icon-close {
     display: none;
   }
-  /* When open, hide hamburger, show X */
   details[open] .icon-hamburger {
     display: none;
   }
@@ -195,8 +190,7 @@
     position: fixed;
     top: 25px;
     left: 270px;
-    z-index: 200;
-    pointer-events: none;
+    z-index: 102;
   }
 
   /* --- SEARCH BAR --- */
@@ -250,7 +244,7 @@
     width: 30rem;
     height: 100vh;
     background-color: #000;
-    z-index: 150;
+    z-index: 101;
     padding-top: 5rem;
     transform: translateX(-100%);
     transition: transform 0.3s ease;
@@ -258,6 +252,7 @@
   details[open] > .menu-drawer {
     transform: translateX(0);
   }
+
   .menu-drawer__menu-item {
     display: block;
     padding: 1.5rem 2rem;
@@ -268,7 +263,7 @@
   }
 
   /* --- OVERLAY (The Magic Fix) --- */
-  /* We target the summary directly */
+  /* We use the summary::before pseudo-element to create the full screen backdrop */
   details > summary::before {
     content: '';
     display: block;
@@ -279,18 +274,16 @@
     height: 100vh;
     background: rgba(0, 0, 0, 0.7);
     backdrop-filter: blur(2px);
-    z-index: 100; /* High z-index */
-
-    /* Animation settings */
+    z-index: 50;
     opacity: 0;
     visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
 
-  /* Triggers when open */
+  /* When open, show overlay and make it clickable (pointer-events: auto) */
   details[open] > summary::before {
-    opacity: 1 !important;
-    visibility: visible !important;
+    opacity: 1;
+    visibility: visible;
     cursor: default;
   }
 </style>
