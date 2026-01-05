@@ -264,7 +264,7 @@
 
   /* --- OVERLAY (The Magic Fix) --- */
   /* We use the summary::before pseudo-element to create the full screen backdrop */
-  details > summary::before {
+  .header__icon--menu[aria-expanded='true']:before {
     content: '';
     display: block;
     position: fixed;
@@ -281,7 +281,7 @@
   }
 
   /* When open, show overlay and make it clickable (pointer-events: auto) */
-  details[open] > summary::before {
+  details[open] > .header__icon--menu[aria-expanded='true']:before {
     opacity: 1;
     visibility: visible;
     cursor: default;
