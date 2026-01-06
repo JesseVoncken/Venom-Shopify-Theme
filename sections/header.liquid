@@ -259,6 +259,7 @@
     cursor: pointer;
     display: flex;
     align-items: center;
+    display: none;
   }
 
   .search-mobile-toggle {
@@ -277,6 +278,10 @@
   @media screen and (max-width: 768px) {
     .header-container {
       padding: 0 1.5rem;
+    }
+
+    .search-icon {
+      display: block;
     }
 
     /* 1. Position the bar UNDER the header */
