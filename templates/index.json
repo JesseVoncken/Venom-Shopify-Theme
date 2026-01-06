@@ -83,7 +83,9 @@
         "product_limit": 4,
         "show_vendor": true,
         "show_stock": true,
-        "show_new_badge_always": false
+        "show_new_badge_always": false,
+        "background_logo": "shopify://shop_images/Venom_logo.svg",
+        "logo_opacity": 100
       }
     }
   },
