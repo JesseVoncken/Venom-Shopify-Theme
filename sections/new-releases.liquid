@@ -1,25 +1,40 @@
 {% comment %}
-  Section: New Releases Grid with Background Logo Control
-  Description: Features size and color controls for the background logo using CSS masking.
+  Section: New Releases Grid with Full Customization
+  Description: Dynamic grid sizing (fills space based on item count) and custom background color.
 {% endcomment %}
 
+{%- liquid
+  # 1. Calculate Grid Columns based on Product Limit
+  # If limit is 2, use 2 cols. If 3, use 3 cols. Cap at 4 cols max for layout sanity.
+  assign limit = section.settings.product_limit
+  if limit > 4
+    assign grid_cols = 4
+  else
+    assign grid_cols = limit
+  endif
+-%}
+
 {%- style -%}
+  /* Define Dynamic Variables for this section */
+  #shopify-section-{{ section.id }} {
+    --section-bg-color: {{ section.settings.section_bg_color }};
+    --grid-desktop-cols: {{ grid_cols }};
+  }
+
   /* Dynamic Styles for the Background Logo */
   {% if section.settings.background_logo != blank %}
     #shopify-section-{{ section.id }} .new-releases-section::before {
-      /* 1. Size Control */
-      width: {{ section.settings.logo_size }}%;
-
-      /* 2. Opacity Control */
+      /* Size Control */
+      width: {{ section.settings.logo_size }}%; 
+      
+      /* Opacity Control */
       opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
-
+      
       {% if section.settings.enable_custom_color %}
-        /* --- OPTION A: RECOLOR MODE (Using Masks) --- */
-        /* This creates a solid block of color... */
+        /* RECOLOR MODE */
         background-color: {{ section.settings.logo_color }};
-        /* ...and cuts it into the shape of your logo */
-        -webkit-mask-image: url({{ section.settings.background_logo | image_url: width: 800 }});
-        mask-image: url({{ section.settings.background_logo | image_url: width: 800 }});
+        -webkit-mask-image: url({{ section.settings.background_logo | image_url: width: 1200 }});
+        mask-image: url({{ section.settings.background_logo | image_url: width: 1200 }});
         -webkit-mask-repeat: no-repeat;
         -webkit-mask-position: center;
         -webkit-mask-size: contain;
@@ -27,8 +42,8 @@
         mask-position: center;
         mask-size: contain;
       {% else %}
-        /* --- OPTION B: ORIGINAL IMAGE MODE --- */
-        background-image: url({{ section.settings.background_logo | image_url: width: 800 }});
+        /* ORIGINAL IMAGE MODE */
+        background-image: url({{ section.settings.background_logo | image_url: width: 1200 }});
         background-repeat: no-repeat;
         background-position: center;
         background-size: contain;
@@ -134,7 +149,7 @@
 
 <style>
   .new-releases-section {
-    background-color: #212121;
+    background-color: var(--section-bg-color); /* Uses the picker selection */
     padding: 60px 0;
     color: white;
     position: relative;
@@ -147,12 +162,12 @@
     position: absolute;
     top: 50%;
     left: 50%;
-    transform: translate(-50%, -50%); /* Keeps it perfectly centered */
-    height: 120%; /* Base height constraint */
-    max-width: 120%;
+    transform: translate(-50%, -50%);
+    aspect-ratio: 1 / 1; 
+    height: auto; 
+    padding-bottom: 100%;
     z-index: 1;
     pointer-events: none;
-    /* Image URL, Color, and Width are handled by the Liquid Style tag above */
   }
 
   .new-releases-header {
@@ -202,7 +217,8 @@
 
   .new-releases-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    /* DYNAMIC GRID: Uses the calculated column count */
+    grid-template-columns: repeat(var(--grid-desktop-cols), 1fr);
     gap: 25px;
     position: relative;
     z-index: 2;
@@ -268,7 +284,6 @@
     font-weight: normal;
     line-height: 1.4;
     font-family: var(--font-body-family);
-    font-style: var(--font-body-style);
   }
   .product-title a {
     color: white;
@@ -305,6 +320,7 @@
       font-size: 36px;
     }
     .new-releases-grid {
+      /* Force single column on mobile */
       grid-template-columns: 1fr;
     }
     .product-card__image-wrapper {
@@ -317,6 +333,13 @@
 {
   "name": "New Releases Grid",
   "settings": [
+    { "type": "header", "content": "Section Styles" },
+    {
+      "type": "color",
+      "id": "section_bg_color",
+      "label": "Section Background Color",
+      "default": "#212121"
+    },
     { "type": "header", "content": "Content" },
     { "type": "text", "id": "subheading", "label": "Subheading", "default": "The Latest Drops" },
     { "type": "text", "id": "heading", "label": "Heading", "default": "NEW RELEASES." },
