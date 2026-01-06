@@ -1,7 +1,18 @@
 {% comment %}
-  Section: New Releases Grid
-  Description: A section featuring a header with a title and "View All" button, followed by a grid of product cards with specific styling (badges, vendor, stock).
+  Section: New Releases Grid with Background Logo
+  Description: A header and product grid with a subtle, user-selectable background logo.
 {% endcomment %}
+
+{%- style -%}
+  /* Dynamically inject the background logo if one is selected */
+  {% if section.settings.background_logo != blank %}
+    #shopify-section-{{ section.id }} .new-releases-section::before {
+      background-image: url({{ section.settings.background_logo | image_url: width: 800 }});
+      /* Adjust opacity here to make it more or less subtle */
+      opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
+    }
+  {% endif %}
+{%- endstyle -%}
 
 <div class="new-releases-section">
   <div class="page-width">
@@ -53,7 +64,6 @@
                   width="600"
                   height="{{ 600 | divided_by: product.featured_image.aspect_ratio | ceil }}"
                 >
-                {% comment %} Optional: Add a subtle logo overlay on the image if desired, like in the example {% endcomment %}
                 <div class="product-image-overlay-logo">Your Logo</div>
               {%- else -%}
                 {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
@@ -109,19 +119,22 @@
     overflow: hidden;
   }
 
-  /* Optional: Subtle background pattern */
+  /* BACKGROUND LOGO STYLING */
   .new-releases-section::before {
     content: '';
     position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%231a1a1a"><path d="M0 0h100v100H0z" fill="none"/><path d="M50 20l30 60H20z" opacity="0.1"/></svg>'); /* Replace with your actual logo pattern svg */
-    background-size: 500px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%); /* Center the logo */
+    width: 80%; /* Adjust base size relative to container */
+    max-width: 600px; /* Max width constraint */
+    height: 80%;
     background-position: center;
-    opacity: 0.2;
+    background-repeat: no-repeat;
+    background-size: contain; /* Ensure logo fits without stretching */
+    z-index: 1; /* Sit behind content */
     pointer-events: none;
+    /* Opacity is handled dynamically by the settings slider now */
   }
 
   .new-releases-header {
@@ -130,7 +143,7 @@
     align-items: flex-end;
     margin-bottom: 40px;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Ensure text sits on top of background logo */
   }
 
   .subheading {
@@ -177,7 +190,7 @@
     grid-template-columns: repeat(4, 1fr);
     gap: 25px;
     position: relative;
-    z-index: 2;
+    z-index: 2; /* Ensure grid sits on top of background logo */
   }
 
   .product-card {
@@ -313,6 +326,10 @@
   "name": "New Releases Grid",
   "settings": [
     {
+      "type": "header",
+      "content": "Content"
+    },
+    {
       "type": "text",
       "id": "subheading",
       "label": "Subheading",
@@ -350,6 +367,10 @@
       "label": "Number of products to show"
     },
     {
+      "type": "header",
+      "content": "Product Card Settings"
+    },
+    {
       "type": "checkbox",
       "id": "show_vendor",
       "label": "Show vendor",
@@ -367,6 +388,25 @@
       "label": "Always show 'NEW' badge",
       "info": "If unchecked, badge only shows for products with a 'new' tag.",
       "default": false
+    },
+    {
+      "type": "header",
+      "content": "Background Options"
+    },
+    {
+      "type": "image_picker",
+      "id": "background_logo",
+      "label": "Background Logo",
+      "info": "Upload a transparent PNG logo."
+    },
+    {
+      "type": "range",
+      "id": "logo_opacity",
+      "min": 0,
+      "max": 100,
+      "step": 5,
+      "label": "Logo Opacity %",
+      "default": 10
     }
   ],
   "presets": [
