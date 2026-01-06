@@ -26,30 +26,35 @@
         "category_8XwFzx": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "CUSTOM DECALS"
           }
         },
         "category_tkPzVf": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "3D ACCESSORIES"
           }
         },
         "category_CF9rrn": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "CHROME FIGURES"
           }
         },
         "category_idEmGx": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "MINIFIGURE UPGRADES"
           }
         },
         "category_UY4XyN": {
           "type": "category",
           "settings": {
+            "collection": "",
             "title": "TACTICAL GEAR"
           }
         }
@@ -65,10 +70,26 @@
       "settings": {
         "speed": 30
       }
+    },
+    "new_releases_tdg3ac": {
+      "type": "new-releases",
+      "name": "New Releases Grid",
+      "settings": {
+        "subheading": "The Latest Drops",
+        "heading": "NEW RELEASES.",
+        "button_label": "VIEW ALL DROPS",
+        "button_link": "shopify://collections/all",
+        "collection": "automated-collection",
+        "product_limit": 4,
+        "show_vendor": true,
+        "show_stock": true,
+        "show_new_badge_always": false
+      }
     }
   },
   "order": [
     "hero_GR9LYV",
-    "marquee_t6U4td"
+    "marquee_t6U4td",
+    "new_releases_tdg3ac"
   ]
 }
