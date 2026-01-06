@@ -232,9 +232,14 @@
     border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 5px 15px;
     width: 250px;
-    border-radius: 50px;
+    border-radius: 4px;
     transition: all 0.3s ease;
   }
+
+  .search-mobile-toggle {
+    display: none;
+  }
+
   .search-input {
     background: transparent;
     border: none;
@@ -281,7 +286,7 @@
       left: 0;
       width: 100%; /* Full width */
       z-index: 20;
-      background: #000; /* Solid black background */
+      background: rgba(0, 0, 0, 0.4); /* Solid black background */
       border-radius: 0; /* Remove pill shape for container */
       padding: 15px 20px;
       border: none;
