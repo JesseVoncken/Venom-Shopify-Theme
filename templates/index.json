@@ -17,7 +17,7 @@
         "subheading": "VENOMCBW",
         "heading": "PREMIUM FIGURE SOLUTIONS",
         "button_url": "",
-        "button_label": "BROWSE NOW"
+        "button_label": "browse now"
       }
     },
     "marquee_t6U4td": {
@@ -26,36 +26,31 @@
         "category_8XwFzx": {
           "type": "category",
           "settings": {
-            "title": "CUSTOM DECALS",
-            "link": ""
+            "title": "CUSTOM DECALS"
           }
         },
         "category_tkPzVf": {
           "type": "category",
           "settings": {
-            "title": "3D ACCESSORIES",
-            "link": ""
+            "title": "3D ACCESSORIES"
           }
         },
         "category_CF9rrn": {
           "type": "category",
           "settings": {
-            "title": "CHROME FIGURES",
-            "link": ""
+            "title": "CHROME FIGURES"
           }
         },
         "category_idEmGx": {
           "type": "category",
           "settings": {
-            "title": "MINIFIGURE UPGRADES",
-            "link": ""
+            "title": "MINIFIGURE UPGRADES"
           }
         },
         "category_UY4XyN": {
           "type": "category",
           "settings": {
-            "title": "TACTICAL GEAR",
-            "link": ""
+            "title": "TACTICAL GEAR"
           }
         }
       },
