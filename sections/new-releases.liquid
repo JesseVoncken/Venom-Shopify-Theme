@@ -25,11 +25,11 @@
   {% if section.settings.background_logo != blank %}
     #shopify-section-{{ section.id }} .new-releases-section::before {
       /* Size Control */
-      width: {{ section.settings.logo_size }}%; 
-      
+      width: {{ section.settings.logo_size }}%;
+
       /* Opacity Control */
       opacity: {{ section.settings.logo_opacity | divided_by: 100.0 }};
-      
+
       {% if section.settings.enable_custom_color %}
         /* RECOLOR MODE */
         background-color: {{ section.settings.logo_color }};
@@ -163,8 +163,8 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    aspect-ratio: 1 / 1; 
-    height: auto; 
+    aspect-ratio: 1 / 1;
+    height: auto;
     padding-bottom: 100%;
     z-index: 1;
     pointer-events: none;
@@ -225,7 +225,6 @@
   }
 
   .product-card {
-    background-color: #1e1e1e;
     border-radius: 8px;
     overflow: hidden;
     transition: transform 0.3s ease;
