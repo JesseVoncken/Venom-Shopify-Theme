@@ -268,29 +268,37 @@
     margin-left: 5px;
   }
 
-  /* --- RESPONSIVE MOBILE LOGIC --- */
+  /* --- RESPONSIVE MOBILE LOGIC (UPDATED FOR UNDER-HEADER) --- */
   @media screen and (max-width: 768px) {
     .header-container {
       padding: 0 1.5rem;
     }
 
-    /* 1. Hide the full search bar initially */
+    /* 1. Position the bar UNDER the header */
     .header__search {
-      display: none;
       position: absolute;
-      left: 10px;
-      right: 60px; /* Leave space for cart */
-      top: 50%;
-      transform: translateY(-50%);
-      width: auto;
+      top: 100%; /* Push to bottom edge of header */
+      left: 0;
+      width: 100%; /* Full width */
       z-index: 20;
-      background: rgba(0, 0, 0, 0.8); /* Darker bg for visibility */
-      backdrop-filter: blur(10px);
+      background: #000; /* Solid black background */
+      border-radius: 0; /* Remove pill shape for container */
+      padding: 15px 20px;
+      border: none;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+
+      /* Animation States */
+      opacity: 0;
+      visibility: hidden;
+      transform: translateY(-10px); /* Start slightly higher */
+      transition: all 0.3s ease;
     }
 
-    /* 2. Show the active class when toggled */
+    /* 2. Show when active */
     .header__search.active {
-      display: flex;
+      opacity: 1;
+      visibility: visible;
+      transform: translateY(0); /* Slide down to natural position */
     }
 
     /* 3. Show the toggle button */
@@ -305,10 +313,10 @@
 
     /* 5. Adjust Logo Size */
     .header__logo-image {
-      max-width: 120px;
-    } /* Smaller logo on mobile */
+      max-width: 80px;
+    }
 
-    /* 6. Hide Account Icon on Mobile to save space */
+    /* 6. Hide Account Icon on Mobile */
     .small-hide {
       display: none;
     }
@@ -389,7 +397,8 @@
       // Open Search
       searchToggle.addEventListener('click', function () {
         searchForm.classList.add('active');
-        searchForm.querySelector('input').focus();
+        // Small delay to allow CSS transition to start before focusing
+        setTimeout(() => searchForm.querySelector('input').focus(), 50);
       });
 
       // Close Search
