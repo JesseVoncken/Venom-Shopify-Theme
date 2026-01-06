@@ -1,6 +1,6 @@
 {% comment %}
-  Section: Venom Product Spotlight
-  Description: A two-column feature section with product highlights, feature boxes, and dynamic product data.
+  Section: Venom Product Spotlight (Enhanced)
+  Description: Two-column spotlight with fully customizable feature blocks (colors, links, borders).
 {% endcomment %}
 
 <div class="venom-spotlight-section">
@@ -58,10 +58,29 @@
 
         <div class="spotlight-features-grid">
           {%- for block in section.blocks -%}
-            <div class="feature-box">
-              <h4 class="feature-title">{{ block.settings.heading | escape }}</h4>
-              <p class="feature-text">{{ block.settings.text | escape }}</p>
-            </div>
+            {%- style -%}
+              .feature-box-{{ block.id }} {
+                border-color: {{ block.settings.border_color }};
+                background-color: {{ block.settings.bg_color }};
+              }
+              .feature-box-{{ block.id }} h4 { color: {{ block.settings.text_color }}; }
+              .feature-box-{{ block.id }} p { color: {{ block.settings.text_color | color_modify: 'alpha', 0.7 }}; }
+            {%- endstyle -%}
+
+            {%- if block.settings.link != blank -%}
+              <a href="{{ block.settings.link }}" class="feature-box feature-box-{{ block.id }} is-link">
+            {%- else -%}
+              <div class="feature-box feature-box-{{ block.id }}">
+            {%- endif -%}
+
+            <h4 class="feature-title">{{ block.settings.heading | escape }}</h4>
+            <p class="feature-text">{{ block.settings.text | escape }}</p>
+
+            {%- if block.settings.link != blank -%}
+              </a>
+            {%- else -%}
+              </div>
+            {%- endif -%}
           {%- endfor -%}
         </div>
 
@@ -111,7 +130,7 @@
     align-items: center;
   }
 
-  /* --- LEFT COLUMN: IMAGE --- */
+  /* --- LEFT COLUMN --- */
   .spotlight-image-wrapper {
     position: relative;
     border-radius: 12px;
@@ -139,11 +158,10 @@
     right: 20px;
     opacity: 0.8;
     pointer-events: none;
-    /* This creates the watermark look */
     mix-blend-mode: overlay;
   }
 
-  /* --- RIGHT COLUMN: CONTENT --- */
+  /* --- RIGHT COLUMN --- */
   .spotlight-subheading {
     display: block;
     font-size: 14px;
@@ -161,9 +179,7 @@
     text-transform: uppercase;
     margin: 0 0 20px 0;
   }
-
   .text-highlight {
-    display: block; /* Makes the highlighted text break to a new line nicely if needed, or inline */
     color: #007bff;
   }
 
@@ -184,23 +200,27 @@
   }
 
   .feature-box {
-    background-color: #1a1a1a;
-    border: 1px solid #333;
+    border: 1px solid; /* Color handled by inline style */
     border-radius: 8px;
     padding: 15px 20px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    text-decoration: none;
+    display: block;
+  }
+
+  .feature-box.is-link:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
 
   .feature-title {
     margin: 0 0 5px 0;
     font-size: 16px;
     font-weight: bold;
-    color: white;
   }
-
   .feature-text {
     margin: 0;
     font-size: 13px;
-    color: #888;
     line-height: 1.4;
   }
 
@@ -232,11 +252,9 @@
     align-items: center;
     transition: background 0.3s ease;
   }
-
   .spotlight-button:hover {
     background-color: #0056b3;
   }
-
   .spotlight-button svg {
     margin-left: 8px;
   }
@@ -250,14 +268,10 @@
     .spotlight-title {
       font-size: 36px;
     }
-    .text-highlight {
-      display: inline;
-    }
   }
-
   @media (max-width: 600px) {
     .spotlight-features-grid {
-      grid-template-columns: 1fr; /* Stack feature boxes on mobile */
+      grid-template-columns: 1fr;
     }
     .spotlight-action-row {
       flex-direction: column;
@@ -271,55 +285,21 @@
 {
   "name": "Product Spotlight",
   "settings": [
-    {
-      "type": "header",
-      "content": "Product Source"
-    },
-    {
-      "type": "product",
-      "id": "product",
-      "label": "Select Product"
-    },
-    {
-      "type": "image_picker",
-      "id": "custom_image",
-      "label": "Custom Image",
-      "info": "Optional. Overrides the product's default image."
-    },
-    {
-      "type": "header",
-      "content": "Text Content"
-    },
-    {
-      "type": "text",
-      "id": "subheading",
-      "label": "Subheading",
-      "default": "Featured Product Spotlight"
-    },
-    {
-      "type": "text",
-      "id": "title",
-      "label": "Main Title (White)",
-      "default": "V2 AGGRESSIVE"
-    },
-    {
-      "type": "text",
-      "id": "title_highlight",
-      "label": "Highlight Title (Blue)",
-      "default": "HAT MAN"
-    },
+    { "type": "header", "content": "Product Source" },
+    { "type": "product", "id": "product", "label": "Select Product" },
+    { "type": "image_picker", "id": "custom_image", "label": "Custom Image", "info": "Overrides product image" },
+
+    { "type": "header", "content": "Text Content" },
+    { "type": "text", "id": "subheading", "label": "Subheading", "default": "Featured Product Spotlight" },
+    { "type": "text", "id": "title", "label": "Main Title (White)", "default": "V2 AGGRESSIVE" },
+    { "type": "text", "id": "title_highlight", "label": "Highlight Title (Blue)", "default": "HAT MAN" },
     {
       "type": "textarea",
       "id": "description",
       "label": "Description",
       "default": "Our most detailed figure yet. Engineered for perfection with 360 industrial UV printing."
     },
-    {
-      "type": "text",
-      "id": "button_label",
-      "label": "Button Label",
-      "default": "GET YOURS NOW"
-    }
+    { "type": "text", "id": "button_label", "label": "Button Label", "default": "GET YOURS NOW" }
   ],
   "blocks": [
     {
@@ -327,18 +307,14 @@
       "name": "Feature Box",
       "limit": 4,
       "settings": [
-        {
-          "type": "text",
-          "id": "heading",
-          "label": "Feature Heading",
-          "default": "High Quality Print"
-        },
-        {
-          "type": "text",
-          "id": "text",
-          "label": "Feature Description",
-          "default": "UV print on genuine pieces"
-        }
+        { "type": "text", "id": "heading", "label": "Feature Heading", "default": "High Quality Print" },
+        { "type": "text", "id": "text", "label": "Feature Description", "default": "UV print on genuine pieces" },
+        { "type": "url", "id": "link", "label": "Box Link (Optional)" },
+
+        { "type": "header", "content": "Box Styling" },
+        { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#1a1a1a" },
+        { "type": "color", "id": "border_color", "label": "Border Color", "default": "#333333" },
+        { "type": "color", "id": "text_color", "label": "Text Color", "default": "#ffffff" }
       ]
     }
   ],
@@ -350,14 +326,16 @@
           "type": "feature",
           "settings": {
             "heading": "High Quality Print",
-            "text": "High Quality UV print on genuine pieces"
+            "text": "High Quality UV print on genuine pieces",
+            "border_color": "#333333"
           }
         },
         {
           "type": "feature",
           "settings": {
             "heading": "Custom Resin Pieces",
-            "text": "Custom Resin Printed Pieces Hand Painted"
+            "text": "Custom Resin Printed Pieces Hand Painted",
+            "border_color": "#333333"
           }
         }
       ]

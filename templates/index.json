@@ -26,45 +26,29 @@
         "category_8XwFzx": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "hydrogen",
             "title": "CUSTOM DECALS"
           }
         },
         "category_tkPzVf": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "frontpage",
             "title": "3D ACCESSORIES"
           }
         },
         "category_CF9rrn": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "automated-collection",
             "title": "CHROME FIGURES"
-          }
-        },
-        "category_idEmGx": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "title": "MINIFIGURE UPGRADES"
-          }
-        },
-        "category_UY4XyN": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "title": "TACTICAL GEAR"
           }
         }
       },
       "block_order": [
         "category_8XwFzx",
         "category_tkPzVf",
-        "category_CF9rrn",
-        "category_idEmGx",
-        "category_UY4XyN"
+        "category_CF9rrn"
       ],
       "name": "Category Marquee",
       "settings": {
@@ -91,11 +75,32 @@
         "enable_custom_color": true,
         "logo_color": "#000000"
       }
+    },
+    "new_releases_LwQfzk": {
+      "type": "new-releases",
+      "name": "New Releases Grid",
+      "settings": {
+        "section_bg_color": "#000000",
+        "subheading": "Community Favorites",
+        "heading": "BEST SELLING.",
+        "button_label": "VIEW ALL DROPS",
+        "button_link": "",
+        "collection": "automated-collection",
+        "product_limit": 3,
+        "show_vendor": true,
+        "show_stock": true,
+        "show_new_badge_always": false,
+        "logo_size": 85,
+        "logo_opacity": 100,
+        "enable_custom_color": false,
+        "logo_color": "#000000"
+      }
     }
   },
   "order": [
     "hero_GR9LYV",
     "marquee_t6U4td",
-    "new_releases_tdg3ac"
+    "new_releases_tdg3ac",
+    "new_releases_LwQfzk"
   ]
 }
