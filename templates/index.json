@@ -80,10 +80,12 @@
         "button_label": "VIEW ALL DROPS",
         "button_link": "shopify://collections/all",
         "collection": "automated-collection",
-        "product_limit": 4,
+        "product_limit": 6,
         "show_vendor": true,
         "show_stock": true,
-        "show_new_badge_always": false
+        "show_new_badge_always": false,
+        "background_logo": "shopify://shop_images/Venom_logo.svg",
+        "logo_opacity": 100
       }
     }
   },
