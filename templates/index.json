@@ -80,7 +80,7 @@
         "button_label": "VIEW ALL DROPS",
         "button_link": "shopify://collections/all",
         "collection": "automated-collection",
-        "product_limit": 4,
+        "product_limit": 3,
         "show_vendor": true,
         "show_stock": true,
         "show_new_badge_always": true,
