@@ -103,14 +103,22 @@
           "type": "feature",
           "settings": {
             "heading": "High Quality Print",
-            "text": "High Quality UV print on genuine pieces"
+            "text": "High Quality UV print on genuine pieces",
+            "link": "",
+            "bg_color": "#1a1a1a",
+            "border_color": "#333333",
+            "text_color": "#ffffff"
           }
         },
         "feature_geWcVz": {
           "type": "feature",
           "settings": {
             "heading": "Custom Resin Pieces",
-            "text": "Custom Resin Printed Pieces Hand Painted"
+            "text": "Custom Resin Printed Pieces Hand Painted",
+            "link": "",
+            "bg_color": "#1a1a1a",
+            "border_color": "#333333",
+            "text_color": "#ffffff"
           }
         }
       },
