@@ -26,45 +26,29 @@
         "category_8XwFzx": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "hydrogen",
             "title": "CUSTOM DECALS"
           }
         },
         "category_tkPzVf": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "frontpage",
             "title": "3D ACCESSORIES"
           }
         },
         "category_CF9rrn": {
           "type": "category",
           "settings": {
-            "collection": "",
+            "collection": "automated-collection",
             "title": "CHROME FIGURES"
-          }
-        },
-        "category_idEmGx": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "title": "MINIFIGURE UPGRADES"
-          }
-        },
-        "category_UY4XyN": {
-          "type": "category",
-          "settings": {
-            "collection": "",
-            "title": "TACTICAL GEAR"
           }
         }
       },
       "block_order": [
         "category_8XwFzx",
         "category_tkPzVf",
-        "category_CF9rrn",
-        "category_idEmGx",
-        "category_UY4XyN"
+        "category_CF9rrn"
       ],
       "name": "Category Marquee",
       "settings": {
