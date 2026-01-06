@@ -87,7 +87,7 @@
         "background_logo": "shopify://shop_images/Venom_logo.svg",
         "logo_size": 100,
         "logo_opacity": 100,
-        "enable_custom_color": false,
+        "enable_custom_color": true,
         "logo_color": "#000000"
       }
     }
