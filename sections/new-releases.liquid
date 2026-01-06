@@ -1,0 +1,376 @@
+{% comment %}
+  Section: New Releases Grid
+  Description: A section featuring a header with a title and "View All" button, followed by a grid of product cards with specific styling (badges, vendor, stock).
+{% endcomment %}
+
+<div class="new-releases-section">
+  <div class="page-width">
+    <div class="new-releases-header">
+      <div class="header-text">
+        {%- if section.settings.subheading != blank -%}
+          <h3 class="subheading">{{ section.settings.subheading | escape }}</h3>
+        {%- endif -%}
+        {%- if section.settings.heading != blank -%}
+          <h2 class="heading">{{ section.settings.heading | escape }}</h2>
+        {%- endif -%}
+      </div>
+      {%- if section.settings.button_label != blank and section.settings.button_link != blank -%}
+        <a href="{{ section.settings.button_link }}" class="view-all-button">
+          {{ section.settings.button_label | escape }}
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            class="feather feather-chevron-right"
+          >
+            <polyline points="9 18 15 12 9 6"></polyline>
+          </svg>
+        </a>
+      {%- endif -%}
+    </div>
+
+    <div class="new-releases-grid">
+      {%- assign collection = collections[section.settings.collection] -%}
+      {%- for product in collection.products limit: section.settings.product_limit -%}
+        <div class="product-card">
+          <div class="product-card__image-wrapper">
+            {%- if product.tags contains 'new' or section.settings.show_new_badge_always -%}
+              <span class="new-badge">NEW</span>
+            {%- endif -%}
+            <a href="{{ product.url }}" class="product-card__link">
+              {%- if product.featured_image != blank -%}
+                <img
+                  src="{{ product.featured_image | image_url: width: 600 }}"
+                  alt="{{ product.title | escape }}"
+                  class="product-card__image"
+                  loading="lazy"
+                  width="600"
+                  height="{{ 600 | divided_by: product.featured_image.aspect_ratio | ceil }}"
+                >
+                {% comment %} Optional: Add a subtle logo overlay on the image if desired, like in the example {% endcomment %}
+                <div class="product-image-overlay-logo">Your Logo</div>
+              {%- else -%}
+                {{ 'product-1' | placeholder_svg_tag: 'product-card__image placeholder' }}
+              {%- endif -%}
+            </a>
+          </div>
+          <div class="product-card__info">
+            {%- if section.settings.show_vendor -%}
+              <span class="product-vendor">{{ product.vendor }}</span>
+            {%- endif -%}
+            <h3 class="product-title">
+              <a href="{{ product.url }}">{{ product.title }}</a>
+            </h3>
+            <div class="product-price-stock">
+              <span class="product-price">{{ product.price | money }}</span>
+              {%- if product.available and section.settings.show_stock -%}
+                {%- assign stock_count = product.variants.first.inventory_quantity -%}
+                {%- if stock_count > 0 -%}
+                  <span class="product-stock">{{ stock_count }} IN STOCK</span>
+                {%- endif -%}
+              {%- endif -%}
+            </div>
+          </div>
+        </div>
+      {%- else -%}
+        {%- for i in (1..section.settings.product_limit) -%}
+          <div class="product-card">
+            <div class="product-card__image-wrapper">
+              <span class="new-badge">NEW</span>
+              {{ 'product-' | append: i | placeholder_svg_tag: 'product-card__image placeholder' }}
+            </div>
+            <div class="product-card__info">
+              <span class="product-vendor">VENDOR</span>
+              <h3 class="product-title">Example Product Title</h3>
+              <div class="product-price-stock">
+                <span class="product-price">$30.00</span>
+                <span class="product-stock">7 IN STOCK</span>
+              </div>
+            </div>
+          </div>
+        {%- endfor -%}
+      {%- endfor -%}
+    </div>
+  </div>
+</div>
+
+<style>
+  .new-releases-section {
+    background-color: #121212; /* Dark background */
+    padding: 60px 0;
+    color: white;
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Optional: Subtle background pattern */
+  .new-releases-section::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="%231a1a1a"><path d="M0 0h100v100H0z" fill="none"/><path d="M50 20l30 60H20z" opacity="0.1"/></svg>'); /* Replace with your actual logo pattern svg */
+    background-size: 500px;
+    background-position: center;
+    opacity: 0.2;
+    pointer-events: none;
+  }
+
+  .new-releases-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 40px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .subheading {
+    font-size: 14px;
+    color: #007bff; /* Blue color */
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    letter-spacing: 1px;
+  }
+
+  .heading {
+    font-size: 48px;
+    font-weight: 900;
+    text-transform: uppercase;
+    margin: 0;
+    line-height: 1;
+  }
+
+  .view-all-button {
+    display: inline-flex;
+    align-items: center;
+    padding: 12px 24px;
+    background-color: white;
+    color: black;
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    text-decoration: none;
+    border-radius: 4px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap;
+  }
+
+  .view-all-button:hover {
+    background-color: #e6e6e6;
+  }
+
+  .view-all-button svg {
+    margin-left: 8px;
+  }
+
+  .new-releases-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 25px;
+    position: relative;
+    z-index: 2;
+  }
+
+  .product-card {
+    background-color: #1e1e1e; /* Slightly lighter card background */
+    border-radius: 8px;
+    overflow: hidden;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover {
+    transform: translateY(-5px);
+  }
+
+  .product-card__image-wrapper {
+    position: relative;
+    aspect-ratio: 4 / 5; /* Adjust ratio as needed */
+    background-color: #2a2a2a;
+    overflow: hidden;
+  }
+
+  .new-badge {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background-color: #007bff;
+    color: white;
+    font-size: 12px;
+    font-weight: bold;
+    padding: 5px 10px;
+    border-radius: 4px;
+    z-index: 2;
+  }
+
+  .product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+  }
+
+  .product-card:hover .product-card__image {
+    transform: scale(1.05);
+  }
+
+  .product-card__image.placeholder {
+    padding: 40px;
+    fill: #444;
+  }
+
+  /* Subtle logo on image corner */
+  .product-image-overlay-logo {
+    position: absolute;
+    bottom: 10px;
+    right: 10px;
+    color: rgba(255, 255, 255, 0.3);
+    font-size: 14px;
+    font-weight: bold;
+    text-transform: uppercase;
+    pointer-events: none;
+  }
+
+  .product-card__info {
+    padding: 20px;
+  }
+
+  .product-vendor {
+    display: block;
+    font-size: 12px;
+    color: #007bff;
+    text-transform: uppercase;
+    margin-bottom: 5px;
+    font-weight: bold;
+  }
+
+  .product-title {
+    margin: 0 0 10px;
+    font-size: 16px;
+    font-weight: 600;
+    line-height: 1.4;
+  }
+
+  .product-title a {
+    color: white;
+    text-decoration: none;
+  }
+
+  .product-price-stock {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  .product-price {
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .product-stock {
+    font-size: 12px;
+    color: #007bff;
+    font-weight: bold;
+    text-transform: uppercase;
+  }
+
+  @media (max-width: 1024px) {
+    .new-releases-grid {
+      grid-template-columns: repeat(2, 1fr);
+    }
+  }
+
+  @media (max-width: 768px) {
+    .new-releases-header {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 20px;
+    }
+    .heading {
+      font-size: 36px;
+    }
+    .new-releases-grid {
+      grid-template-columns: 1fr;
+    }
+    .product-card__image-wrapper {
+      aspect-ratio: 1 / 1;
+    }
+  }
+</style>
+
+{% schema %}
+{
+  "name": "New Releases Grid",
+  "settings": [
+    {
+      "type": "text",
+      "id": "subheading",
+      "label": "Subheading",
+      "default": "The Latest Drops"
+    },
+    {
+      "type": "text",
+      "id": "heading",
+      "label": "Heading",
+      "default": "NEW RELEASES."
+    },
+    {
+      "type": "text",
+      "id": "button_label",
+      "label": "Button Label",
+      "default": "VIEW ALL DROPS"
+    },
+    {
+      "type": "url",
+      "id": "button_link",
+      "label": "Button Link"
+    },
+    {
+      "type": "collection",
+      "id": "collection",
+      "label": "Collection"
+    },
+    {
+      "type": "range",
+      "id": "product_limit",
+      "min": 2,
+      "max": 8,
+      "step": 1,
+      "default": 4,
+      "label": "Number of products to show"
+    },
+    {
+      "type": "checkbox",
+      "id": "show_vendor",
+      "label": "Show vendor",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_stock",
+      "label": "Show stock level",
+      "default": true
+    },
+    {
+      "type": "checkbox",
+      "id": "show_new_badge_always",
+      "label": "Always show 'NEW' badge",
+      "info": "If unchecked, badge only shows for products with a 'new' tag.",
+      "default": false
+    }
+  ],
+  "presets": [
+    {
+      "name": "New Releases Grid"
+    }
+  ]
+}
+{% endschema %}
