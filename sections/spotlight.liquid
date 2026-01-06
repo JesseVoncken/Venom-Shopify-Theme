@@ -1,42 +1,87 @@
 {% comment %}
-  Section: Venom Product Spotlight (Enhanced)
-  Description: Two-column spotlight with fully customizable feature blocks (colors, links, borders).
+  Section: Venom Product Spotlight (Gallery Slider)
+  Description: Two-column spotlight with an image slider (manual or product images) and customizable feature blocks.
 {% endcomment %}
 
-<div class="venom-spotlight-section">
+<div class="venom-spotlight-section" id="Spotlight-{{ section.id }}">
   <div class="page-width">
     <div class="spotlight-grid">
       <div class="spotlight-image-col">
-        <div class="spotlight-image-wrapper">
-          <a href="{{ section.settings.product.url }}">
-            {%- if section.settings.custom_image != blank -%}
-              <img
-                src="{{ section.settings.custom_image | image_url: width: 800 }}"
-                alt="{{ section.settings.custom_image.alt | escape }}"
-                loading="lazy"
-                width="800"
-                height="800"
-                class="spotlight-img"
-              >
-            {%- elsif section.settings.product != blank -%}
-              <img
-                src="{{ section.settings.product.featured_image | image_url: width: 800 }}"
-                alt="{{ section.settings.product.title | escape }}"
-                loading="lazy"
-                width="800"
-                height="800"
-                class="spotlight-img"
-              >
-            {%- else -%}
-              {{ 'product-1' | placeholder_svg_tag: 'spotlight-img placeholder' }}
-            {%- endif -%}
+        <div class="spotlight-slider-container">
+          <div class="spotlight-slider-track">
+            {%- assign image_blocks = section.blocks | where: 'type', 'gallery_image' -%}
 
-            <div class="spotlight-logo-overlay">
-              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#007bff" width="100">
-                <path d="M20 20 L50 80 L80 20" stroke="white" stroke-width="5" fill="none"/>
-              </svg>
-            </div>
-          </a>
+            {%- if image_blocks.size > 0 -%}
+              {%- for block in image_blocks -%}
+                <div class="spotlight-slide">
+                  <img
+                    src="{{ block.settings.image | image_url: width: 800 }}"
+                    alt="{{ block.settings.image.alt | escape }}"
+                    loading="lazy"
+                    width="800"
+                    height="800"
+                    class="spotlight-img"
+                  >
+                </div>
+              {%- endfor -%}
+
+            {%- elsif section.settings.product != blank and section.settings.product.images.size > 0 -%}
+              {%- for image in section.settings.product.images limit: 5 -%}
+                <div class="spotlight-slide">
+                  <img
+                    src="{{ image | image_url: width: 800 }}"
+                    alt="{{ image.alt | escape }}"
+                    loading="lazy"
+                    width="800"
+                    height="800"
+                    class="spotlight-img"
+                  >
+                </div>
+              {%- endfor -%}
+
+            {%- else -%}
+              <div class="spotlight-slide">
+                {{ 'product-1' | placeholder_svg_tag: 'spotlight-img placeholder' }}
+              </div>
+            {%- endif -%}
+          </div>
+
+          <button class="slider-arrow prev" aria-label="Previous slide">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="15 18 9 12 15 6"></polyline>
+            </svg>
+          </button>
+          <button class="slider-arrow next" aria-label="Next slide">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <polyline points="9 18 15 12 9 6"></polyline>
+            </svg>
+          </button>
+
+          <div class="spotlight-logo-overlay">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" fill="#007bff" width="100">
+              <path d="M20 20 L50 80 L80 20" stroke="white" stroke-width="5" fill="none"/>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -57,7 +102,8 @@
         </div>
 
         <div class="spotlight-features-grid">
-          {%- for block in section.blocks -%}
+          {%- assign feature_blocks = section.blocks | where: 'type', 'feature' -%}
+          {%- for block in feature_blocks -%}
             {%- style -%}
               .feature-box-{{ block.id }} {
                 border-color: {{ block.settings.border_color }};
@@ -130,14 +176,35 @@
     align-items: center;
   }
 
-  /* --- LEFT COLUMN --- */
-  .spotlight-image-wrapper {
+  /* --- SLIDER STYLES --- */
+  .spotlight-slider-container {
     position: relative;
     border-radius: 12px;
     overflow: hidden;
     background-color: #111;
     border: 1px solid #222;
     aspect-ratio: 1 / 1;
+  }
+
+  /* CSS Scroll Snap Slider (No complex JS needed) */
+  .spotlight-slider-track {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Hide scrollbar Firefox */
+  }
+  .spotlight-slider-track::-webkit-scrollbar {
+    display: none; /* Hide scrollbar Chrome */
+  }
+
+  .spotlight-slide {
+    flex: 0 0 100%;
+    width: 100%;
+    height: 100%;
+    scroll-snap-align: center;
   }
 
   .spotlight-img {
@@ -147,11 +214,36 @@
     display: block;
   }
 
-  .spotlight-img.placeholder {
-    padding: 100px;
-    fill: #333;
+  /* Arrows */
+  .slider-arrow {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.6);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+    z-index: 5;
+    transition: background 0.3s;
+  }
+  .slider-arrow:hover {
+    background: #007bff;
+    border-color: #007bff;
+  }
+  .slider-arrow.prev {
+    left: 15px;
+  }
+  .slider-arrow.next {
+    right: 15px;
   }
 
+  /* Logo Overlay */
   .spotlight-logo-overlay {
     position: absolute;
     bottom: 20px;
@@ -159,6 +251,7 @@
     opacity: 0.8;
     pointer-events: none;
     mix-blend-mode: overlay;
+    z-index: 4;
   }
 
   /* --- RIGHT COLUMN --- */
@@ -198,21 +291,18 @@
     gap: 15px;
     margin-bottom: 40px;
   }
-
   .feature-box {
-    border: 1px solid; /* Color handled by inline style */
+    border: 1px solid;
     border-radius: 8px;
     padding: 15px 20px;
     transition: transform 0.2s ease, box-shadow 0.2s ease;
     text-decoration: none;
     display: block;
   }
-
   .feature-box.is-link:hover {
     transform: translateY(-3px);
     box-shadow: 0 5px 15px rgba(0, 0, 0, 0.5);
   }
-
   .feature-title {
     margin: 0 0 5px 0;
     font-size: 16px;
@@ -232,14 +322,12 @@
     border-top: 1px solid #222;
     padding-top: 30px;
   }
-
   .spotlight-price {
     font-size: 32px;
     font-weight: 900;
     color: white;
     letter-spacing: -1px;
   }
-
   .spotlight-button {
     background-color: #007bff;
     color: white;
@@ -259,7 +347,6 @@
     margin-left: 8px;
   }
 
-  /* --- RESPONSIVE --- */
   @media (max-width: 900px) {
     .spotlight-grid {
       grid-template-columns: 1fr;
@@ -281,13 +368,38 @@
   }
 </style>
 
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // Isolate this specific section
+    const section = document.querySelector('#Spotlight-{{ section.id }}');
+    const track = section.querySelector('.spotlight-slider-track');
+    const prevBtn = section.querySelector('.slider-arrow.prev');
+    const nextBtn = section.querySelector('.slider-arrow.next');
+
+    if (track && prevBtn && nextBtn) {
+      nextBtn.addEventListener('click', () => {
+        const slideWidth = track.clientWidth;
+        track.scrollBy({ left: slideWidth, behavior: 'smooth' });
+      });
+
+      prevBtn.addEventListener('click', () => {
+        const slideWidth = track.clientWidth;
+        track.scrollBy({ left: -slideWidth, behavior: 'smooth' });
+      });
+    }
+  });
+</script>
+
 {% schema %}
 {
   "name": "Product Spotlight",
   "settings": [
     { "type": "header", "content": "Product Source" },
     { "type": "product", "id": "product", "label": "Select Product" },
-    { "type": "image_picker", "id": "custom_image", "label": "Custom Image", "info": "Overrides product image" },
+    {
+      "type": "paragraph",
+      "content": "The slider will automatically show the product images. To use custom images, add 'Gallery Image' blocks below."
+    },
 
     { "type": "header", "content": "Text Content" },
     { "type": "text", "id": "subheading", "label": "Subheading", "default": "Featured Product Spotlight" },
@@ -297,7 +409,7 @@
       "type": "textarea",
       "id": "description",
       "label": "Description",
-      "default": "Our most detailed figure yet. Engineered for perfection with 360 industrial UV printing."
+      "default": "Our most detailed figure yet. Engineered for perfection."
     },
     { "type": "text", "id": "button_label", "label": "Button Label", "default": "GET YOURS NOW" }
   ],
@@ -308,36 +420,26 @@
       "limit": 4,
       "settings": [
         { "type": "text", "id": "heading", "label": "Feature Heading", "default": "High Quality Print" },
-        { "type": "text", "id": "text", "label": "Feature Description", "default": "UV print on genuine pieces" },
-        { "type": "url", "id": "link", "label": "Box Link (Optional)" },
-
-        { "type": "header", "content": "Box Styling" },
-        { "type": "color", "id": "bg_color", "label": "Background Color", "default": "#1a1a1a" },
-        { "type": "color", "id": "border_color", "label": "Border Color", "default": "#333333" },
+        { "type": "text", "id": "text", "label": "Description", "default": "UV print on genuine pieces" },
+        { "type": "url", "id": "link", "label": "Link (Optional)" },
+        { "type": "header", "content": "Styling" },
+        { "type": "color", "id": "bg_color", "label": "Background", "default": "#1a1a1a" },
+        { "type": "color", "id": "border_color", "label": "Border", "default": "#333333" },
         { "type": "color", "id": "text_color", "label": "Text Color", "default": "#ffffff" }
       ]
+    },
+    {
+      "type": "gallery_image",
+      "name": "Gallery Image",
+      "settings": [{ "type": "image_picker", "id": "image", "label": "Image" }]
     }
   ],
   "presets": [
     {
       "name": "Product Spotlight",
       "blocks": [
-        {
-          "type": "feature",
-          "settings": {
-            "heading": "High Quality Print",
-            "text": "High Quality UV print on genuine pieces",
-            "border_color": "#333333"
-          }
-        },
-        {
-          "type": "feature",
-          "settings": {
-            "heading": "Custom Resin Pieces",
-            "text": "Custom Resin Printed Pieces Hand Painted",
-            "border_color": "#333333"
-          }
-        }
+        { "type": "feature", "settings": { "heading": "High Quality", "border_color": "#333" } },
+        { "type": "feature", "settings": { "heading": "Custom Resin", "border_color": "#333" } }
       ]
     }
   ]
