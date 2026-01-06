@@ -148,8 +148,6 @@
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%); /* Keeps it perfectly centered */
-    height: 80%; /* Base height constraint */
-    max-width: 100%;
     z-index: 1;
     pointer-events: none;
     /* Image URL, Color, and Width are handled by the Liquid Style tag above */
@@ -265,8 +263,10 @@
   .product-title {
     margin: 0 0 10px;
     font-size: 16px;
-    font-weight: 600;
+    font-weight: normal;
     line-height: 1.4;
+    font-family: var(--font-body-family);
+    font-style: var(--font-body-style);
   }
   .product-title a {
     color: white;
@@ -339,7 +339,7 @@
       "type": "range",
       "id": "logo_size",
       "min": 10,
-      "max": 100,
+      "max": 200,
       "step": 5,
       "label": "Logo Size",
       "default": 80,
