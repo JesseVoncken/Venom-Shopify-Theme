@@ -171,21 +171,31 @@
 <style>
   /* --- LAYOUT --- */
   .custom-header {
-    position: fixed; /* Changed from absolute to fixed for stickiness */
+    position: fixed;
     top: 0;
     left: 0;
     width: 100%;
     z-index: 10;
     padding: 15px 0;
-    background: transparent; /* Start transparent */
-    transition: background-color 0.3s ease, padding 0.3s ease; /* Smooth transition */
+    background: transparent;
+    transition: background-color 0.3s ease, padding 0.3s ease;
   }
 
-  /* This class is added via JS when scrolling */
+  /* Sticky State */
   .custom-header.scrolled {
-    background-color: #000000; /* Turns black */
-    padding: 10px 0; /* Optional: shrink slightly when scrolling */
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Optional: add shadow */
+    background-color: #000000;
+    padding: 10px 0; /* Shrink the header height slightly */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+  }
+
+  /* --- LOGO SHRINKING MAGIC --- */
+  .header__logo-image {
+    transition: width 0.3s ease, max-width 0.3s ease; /* Animate width changes */
+  }
+
+  /* When scrolled, override the logo width to be smaller */
+  .custom-header.scrolled .header__logo-image {
+    max-width: 60px !important; /* Adjust this value to control how small it gets */
   }
 
   .header-container {
@@ -237,7 +247,7 @@
     z-index: 102;
   }
 
-  /* --- SEARCH BAR (DESKTOP DEFAULT) --- */
+  /* --- SEARCH BAR --- */
   .header__search {
     display: flex;
     align-items: center;
@@ -278,61 +288,53 @@
     margin-left: 5px;
   }
 
-  /* --- RESPONSIVE MOBILE LOGIC (UPDATED FOR UNDER-HEADER) --- */
+  /* --- RESPONSIVE MOBILE --- */
   @media screen and (max-width: 768px) {
     .header-container {
       padding: 0 1.5rem;
     }
 
-    /* 1. Position the bar UNDER the header */
     .header__search {
       position: absolute;
-      top: 100%; /* Push to bottom edge of header */
+      top: 100%;
       left: 0;
-      width: 100%; /* Full width */
+      width: 100%;
       z-index: 20;
-      background: rgba(0, 0, 0, 0.9); /* Solid dark background */
-      border-radius: 0; /* Remove pill shape for container */
+      background: rgba(0, 0, 0, 0.9);
+      border-radius: 0;
       padding: 15px 20px;
       border: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-
-      /* Animation States */
       opacity: 0;
       visibility: hidden;
-      transform: translateY(-10px); /* Start slightly higher */
+      transform: translateY(-10px);
       transition: all 0.3s ease;
     }
 
-    /* 2. Show when active */
     .header__search.active {
       opacity: 1;
       visibility: visible;
-      transform: translateY(0); /* Slide down to natural position */
+      transform: translateY(0);
     }
 
-    /* 3. Show the toggle button */
     .search-mobile-toggle {
       display: flex;
     }
 
-    /* 4. Show the Close "X" inside the bar */
     .search-close-mobile {
       display: block;
     }
 
-    /* 5. Adjust Logo Size */
     .header__logo-image {
       max-width: 80px;
     }
 
-    /* 6. Hide Account Icon on Mobile */
     .small-hide {
       display: none;
     }
   }
 
-  /* --- DRAWER --- */
+  /* --- DRAWER & OVERLAY --- */
   .menu-drawer {
     position: fixed;
     top: 0;
@@ -360,7 +362,6 @@
     text-transform: uppercase;
   }
 
-  /* --- OVERLAY --- */
   .header__icon--menu[aria-expanded='true']:before {
     content: '';
     display: block;
@@ -396,9 +397,9 @@
     left: -5px;
   }
 
-    .search-mobile-toggle {
+  .search-mobile-toggle {
     display: none; !important
-  } /* Hidden on desktop */
+  } 
 </style>
 
 <script>
@@ -408,32 +409,29 @@
     const searchClose = document.querySelector('.search-close-mobile');
     const header = document.querySelector('.custom-header');
 
-    // --- Search Bar Logic ---
-    if (searchToggle && searchForm) {
-      // Open Search
-      searchToggle.addEventListener('click', function () {
-        searchForm.classList.add('active');
-        // Small delay to allow CSS transition to start before focusing
-        setTimeout(() => searchForm.querySelector('input').focus(), 50);
-      });
-
-      // Close Search
-      if (searchClose) {
-        searchClose.addEventListener('click', function () {
-          searchForm.classList.remove('active');
-        });
-      }
-    }
-
-    // --- Sticky Scroll Logic ---
+    // Sticky Scroll Logic
     if (header) {
       window.addEventListener('scroll', function() {
-        if (window.scrollY > 20) { // If scrolled more than 20px
+        if (window.scrollY > 20) { 
           header.classList.add('scrolled');
         } else {
           header.classList.remove('scrolled');
         }
       });
+    }
+
+    // Search Toggle Logic
+    if (searchToggle && searchForm) {
+      searchToggle.addEventListener('click', function () {
+        searchForm.classList.add('active');
+        setTimeout(() => searchForm.querySelector('input').focus(), 50);
+      });
+
+      if (searchClose) {
+        searchClose.addEventListener('click', function () {
+          searchForm.classList.remove('active');
+        });
+      }
     }
   });
 </script>
