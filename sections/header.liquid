@@ -171,14 +171,23 @@
 <style>
   /* --- LAYOUT --- */
   .custom-header {
-    position: absolute;
+    position: fixed; /* Changed from absolute to fixed for stickiness */
     top: 0;
     left: 0;
     width: 100%;
     z-index: 10;
     padding: 15px 0;
-    background: transparent;
+    background: transparent; /* Start transparent */
+    transition: background-color 0.3s ease, padding 0.3s ease; /* Smooth transition */
   }
+
+  /* This class is added via JS when scrolling */
+  .custom-header.scrolled {
+    background-color: #000000; /* Turns black */
+    padding: 10px 0; /* Optional: shrink slightly when scrolling */
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1); /* Optional: add shadow */
+  }
+
   .header-container {
     display: flex;
     justify-content: space-between;
@@ -282,7 +291,7 @@
       left: 0;
       width: 100%; /* Full width */
       z-index: 20;
-      background: rgba(0, 0, 0, 0.4); /* Solid black background */
+      background: rgba(0, 0, 0, 0.9); /* Solid dark background */
       border-radius: 0; /* Remove pill shape for container */
       padding: 15px 20px;
       border: none;
@@ -397,7 +406,9 @@
     const searchToggle = document.querySelector('.search-mobile-toggle');
     const searchForm = document.querySelector('.header__search');
     const searchClose = document.querySelector('.search-close-mobile');
+    const header = document.querySelector('.custom-header');
 
+    // --- Search Bar Logic ---
     if (searchToggle && searchForm) {
       // Open Search
       searchToggle.addEventListener('click', function () {
@@ -412,6 +423,17 @@
           searchForm.classList.remove('active');
         });
       }
+    }
+
+    // --- Sticky Scroll Logic ---
+    if (header) {
+      window.addEventListener('scroll', function() {
+        if (window.scrollY > 20) { // If scrolled more than 20px
+          header.classList.add('scrolled');
+        } else {
+          header.classList.remove('scrolled');
+        }
+      });
     }
   });
 </script>

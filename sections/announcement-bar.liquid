@@ -20,6 +20,7 @@
 
 <div
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
+  style="position: relative; z-index: 50;" 
 >
   <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
     {%- if section.settings.show_social and social_icons -%}
@@ -161,6 +162,18 @@
     </div>
   </div>
 </div>
+
+<style>
+  /* FIX: Ensure announcement bar sits on top of absolute header */
+  .announcement-bar-section {
+    position: relative;
+    z-index: 50; /* Higher than header's z-index (usually 10) */
+  }
+  
+  /* Optional: Ensure header below knows to start AFTER this */
+  /* If the header is overlapping the top of the page content, 
+     adding 'position: relative' to this section usually fixes stacking context */
+</style>
 
 {% schema %}
 {
