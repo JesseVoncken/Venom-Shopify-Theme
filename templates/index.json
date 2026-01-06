@@ -91,11 +91,32 @@
         "enable_custom_color": true,
         "logo_color": "#000000"
       }
+    },
+    "new_releases_LwQfzk": {
+      "type": "new-releases",
+      "name": "New Releases Grid",
+      "settings": {
+        "section_bg_color": "#000000",
+        "subheading": "Community Favorites",
+        "heading": "BEST SELLING.",
+        "button_label": "VIEW ALL DROPS",
+        "button_link": "",
+        "collection": "automated-collection",
+        "product_limit": 3,
+        "show_vendor": true,
+        "show_stock": true,
+        "show_new_badge_always": false,
+        "logo_size": 85,
+        "logo_opacity": 100,
+        "enable_custom_color": false,
+        "logo_color": "#000000"
+      }
     }
   },
   "order": [
     "hero_GR9LYV",
     "marquee_t6U4td",
-    "new_releases_tdg3ac"
+    "new_releases_tdg3ac",
+    "new_releases_LwQfzk"
   ]
 }
