@@ -95,12 +95,45 @@
         "enable_custom_color": false,
         "logo_color": "#000000"
       }
+    },
+    "spotlight_t8DgJe": {
+      "type": "spotlight",
+      "blocks": {
+        "feature_zJVKdj": {
+          "type": "feature",
+          "settings": {
+            "heading": "High Quality Print",
+            "text": "High Quality UV print on genuine pieces"
+          }
+        },
+        "feature_geWcVz": {
+          "type": "feature",
+          "settings": {
+            "heading": "Custom Resin Pieces",
+            "text": "Custom Resin Printed Pieces Hand Painted"
+          }
+        }
+      },
+      "block_order": [
+        "feature_zJVKdj",
+        "feature_geWcVz"
+      ],
+      "name": "Product Spotlight",
+      "settings": {
+        "product": "the-inventory-not-tracked-snowboard",
+        "subheading": "Featured Product Spotlight",
+        "title": "V2 AGGRESSIVE",
+        "title_highlight": "HAT MAN",
+        "description": "Our most detailed figure yet. Engineered for perfection with 360 industrial UV printing.",
+        "button_label": "GET YOURS NOW"
+      }
     }
   },
   "order": [
     "hero_GR9LYV",
     "marquee_t6U4td",
     "new_releases_tdg3ac",
-    "new_releases_LwQfzk"
+    "new_releases_LwQfzk",
+    "spotlight_t8DgJe"
   ]
 }
