@@ -13,8 +13,11 @@
       "type": "hero",
       "name": "Venom Hero Banner",
       "settings": {
-        "logo_width": 100,
-        "menu": "main-menu"
+        "image": "shopify://shop_images/image_3.png",
+        "subheading": "VENOMCBW",
+        "heading": "PREMIUM FIGURE SOLUTIONS",
+        "button_url": "",
+        "button_label": "BROWSE NOW"
       }
     },
     "marquee_t6U4td": {
