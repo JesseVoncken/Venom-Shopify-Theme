@@ -169,7 +169,7 @@
 </header>
 
 <style>
-  /* --- LAYOUT --- */
+  /* --- LAYOUT & SCROLL ANIMATION --- */
   .custom-header {
     position: fixed;
     top: 0;
@@ -178,26 +178,33 @@
     z-index: 10;
     padding: 15px 0;
     background: transparent;
-    transition: background-color 0.3s ease, padding 0.3s ease;
+    transition: background-color 0.4s ease, padding 0.4s ease;
   }
 
-  /* Sticky State */
+  /* State when scrolled */
   .custom-header.scrolled {
     background-color: #000000;
-    padding: 10px 0; /* Shrink the header height slightly */
+    padding: 10px 0; /* Shrink header slightly */
     box-shadow: 0 4px 12px rgba(0,0,0,0.3);
   }
 
-  /* --- LOGO SHRINKING MAGIC --- */
+  /* --- SMOOTH LOGO RESIZING --- */
   .header__logo-image {
-    transition: width 0.3s ease, max-width 0.3s ease; /* Animate width changes */
+    /* Set the initial width explicitly in CSS to allow transition */
+    width: {{ section.settings.logo_width }}px;
+    max-width: 100%;
+    height: auto;
+    /* Use cubic-bezier for a silkier animation feel */
+    transition: width 0.4s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  /* When scrolled, override the logo width to be smaller */
+  /* Target width when scrolled */
   .custom-header.scrolled .header__logo-image {
-    max-width: 60px !important; /* Adjust this value to control how small it gets */
+    width: 65px; /* Adjust this value for how small you want it */
   }
 
+
+  /* --- GENERAL LAYOUT --- */
   .header-container {
     display: flex;
     justify-content: space-between;
@@ -220,7 +227,7 @@
     text-align: center;
   }
 
-  /* --- ICONS & TEXT --- */
+  /* --- ICONS --- */
   .header__icon {
     background: none;
     border: none;
@@ -228,17 +235,14 @@
     color: white;
     display: flex;
     align-items: center;
-    transition: 3ms;
+    transition: 0.3s;
   }
   .header__icon:hover{
-  color: #0085FF}
+    color: #0085FF;
+  }
 
-  .icon-close {
-    display: none;
-  }
-  details[open] .icon-hamburger {
-    display: none;
-  }
+  .icon-close { display: none; }
+  details[open] .icon-hamburger { display: none; }
   details[open] .icon-close {
     display: block;
     position: fixed;
@@ -258,7 +262,6 @@
     border-radius: 4px;
     transition: all 0.3s ease;
   }
-
   .search-input {
     background: transparent;
     border: none;
@@ -268,31 +271,13 @@
     font-size: 14px;
     outline: none;
   }
-  .search-input::placeholder {
-    color: rgba(255, 255, 255, 0.7);
-  }
-  .search-icon {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-  }
-  .search-close-mobile {
-    display: none;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    margin-left: 5px;
-  }
+  .search-input::placeholder { color: rgba(255, 255, 255, 0.7); }
+  .search-icon { background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; }
+  .search-close-mobile { display: none; background: none; border: none; color: white; cursor: pointer; margin-left: 5px; }
 
   /* --- RESPONSIVE MOBILE --- */
   @media screen and (max-width: 768px) {
-    .header-container {
-      padding: 0 1.5rem;
-    }
+    .header-container { padding: 0 1.5rem; }
 
     .header__search {
       position: absolute;
@@ -305,101 +290,48 @@
       padding: 15px 20px;
       border: none;
       border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px);
+      opacity: 0; visibility: hidden; transform: translateY(-10px);
       transition: all 0.3s ease;
     }
+    .header__search.active { opacity: 1; visibility: visible; transform: translateY(0); }
+    .search-mobile-toggle { display: flex; }
+    .search-close-mobile { display: block; }
 
-    .header__search.active {
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0);
-    }
+    /* Mobile logo override */
+    .header__logo-image { width: 80px; }
+    /* Prevent mobile logo from shrinking too much on scroll if desired, or let it shrink */
+    .custom-header.scrolled .header__logo-image { width: 60px; }
 
-    .search-mobile-toggle {
-      display: flex;
-    }
-
-    .search-close-mobile {
-      display: block;
-    }
-
-    .header__logo-image {
-      max-width: 80px;
-    }
-
-    .small-hide {
-      display: none;
-    }
+    .small-hide { display: none; }
   }
 
-  /* --- DRAWER & OVERLAY --- */
+  /* --- DRAWER --- */
   .menu-drawer {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 30rem;
-    height: 100vh;
-    background-color: #000;
-    z-index: 101;
-    padding-top: 5rem;
-    transform: translateX(-100%);
-    transition: transform 0.3s ease;
+    position: fixed; top: 0; left: 0; width: 30rem; height: 100vh;
+    background-color: #000; z-index: 101; padding-top: 5rem;
+    transform: translateX(-100%); transition: transform 0.3s ease;
   }
-  details[open] > .menu-drawer {
-    transform: translateX(0);
-  }
-  .menu-drawer__menu-item {
-    display: block;
-    padding: 1rem 1rem;
-    text-decoration: none;
-    font-size: 1.8rem;
-    color: white;
-  }
-  .list-menu li {
-    list-style-type: none;
-    text-transform: uppercase;
-  }
+  details[open] > .menu-drawer { transform: translateX(0); }
+  .menu-drawer__menu-item { display: block; padding: 1rem 1rem; text-decoration: none; font-size: 1.8rem; color: white; }
+  .list-menu li { list-style-type: none; text-transform: uppercase; }
 
+  /* Overlay */
   .header__icon--menu[aria-expanded='true']:before {
-    content: '';
-    display: block;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100vw;
-    height: 100vh;
-    background: rgba(0, 0, 0, 0.7);
-    backdrop-filter: blur(2px);
-    z-index: 50;
-    opacity: 0;
-    visibility: hidden;
+    content: ''; display: block; position: fixed; top: 0; left: 0;
+    width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.7);
+    backdrop-filter: blur(2px); z-index: 50; opacity: 0; visibility: hidden;
     transition: opacity 0.3s ease, visibility 0.3s ease;
   }
-  details[open] > .header__icon--menu[aria-expanded='true']:before {
-    opacity: 1;
-    visibility: visible;
-    cursor: default;
-  }
+  details[open] > .header__icon--menu[aria-expanded='true']:before { opacity: 1; visibility: visible; cursor: default; }
+
   .cart-count-bubble {
-    background-color: #0099ff;
-    color: white;
-    font-size: 10px;
-    border-radius: 50%;
-    width: 16px;
-    height: 16px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    position: relative;
-    top: -8px;
-    left: -5px;
+    background-color: #0099ff; color: white; font-size: 10px;
+    border-radius: 50%; width: 16px; height: 16px; display: flex;
+    justify-content: center; align-items: center; position: relative;
+    top: -8px; left: -5px;
   }
 
-  .search-mobile-toggle {
-    display: none; !important
-  } 
+  .search-mobile-toggle { display: none; !important }
 </style>
 
 <script>
@@ -411,8 +343,8 @@
 
     // Sticky Scroll Logic
     if (header) {
-      window.addEventListener('scroll', function() {
-        if (window.scrollY > 20) { 
+      window.addEventListener('scroll', function () {
+        if (window.scrollY > 20) {
           header.classList.add('scrolled');
         } else {
           header.classList.remove('scrolled');
