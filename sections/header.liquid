@@ -58,7 +58,7 @@
         </div>
       </details>
 
-      <button type="button" class="header__icon search-mobile-toggle mobile-only" aria-label="Search">
+      <button type="button" class="header__icon search-mobile-toggle" aria-label="Search">
         <svg
           xmlns="http://www.w3.org/2000/svg"
           width="22"
@@ -74,7 +74,7 @@
         </svg>
       </button>
 
-      <form action="{{ routes.search_url }}" method="get" role="search" class="header__search desktop-only">
+      <form action="{{ routes.search_url }}" method="get" role="search" class="header__search">
         <button type="submit" class="search-icon">
           <svg
             xmlns="http://www.w3.org/2000/svg"
@@ -202,39 +202,49 @@
   details[open] .icon-hamburger { display: none; }
   details[open] .icon-close { display: block; position: fixed; top: 25px; left: 270px; z-index: 102; }
 
-  /* --- SEARCH BAR (DESKTOP) --- */
+  /* --- DESKTOP DEFAULT STYLES (Width > 768px) --- */
+  /* Show Search Bar */
   .header__search {
     display: flex; align-items: center;
     background: rgba(0, 0, 0, 0.4); border: 1px solid rgba(255, 255, 255, 0.2);
     padding: 5px 15px; width: 250px; border-radius: 4px;
     transition: all 0.3s ease;
   }
+  /* Hide Toggle Button */
+  .search-mobile-toggle {
+    display: none !important;
+  }
+  .search-close-mobile { display: none; }
+
   .search-input { background: transparent; border: none; color: white; width: 100%; margin-left: 8px; font-size: 14px; outline: none; }
   .search-input::placeholder { color: rgba(255, 255, 255, 0.7); }
   .search-icon { background: none; border: none; color: white; cursor: pointer; display: flex; align-items: center; }
-  .search-close-mobile { display: none; background: none; border: none; color: white; cursor: pointer; margin-left: 5px; }
 
-  /* --- VISIBILITY HELPERS --- */
-  .mobile-only { display: none; } /* Hidden on desktop by default */
-  .desktop-only { display: flex; } /* Visible on desktop by default */
-
-  /* --- RESPONSIVE MOBILE --- */
+  /* --- MOBILE RESPONSIVE STYLES (Width < 768px) --- */
   @media screen and (max-width: 768px) {
     .header-container { padding: 0 1.5rem; }
 
-    /* Switch Visibility */
-    .mobile-only { display: flex; }
-    .desktop-only { display: none; } /* Hide the full bar initially */
+    /* 1. Show the Toggle Icon */
+    .search-mobile-toggle { display: flex !important; }
 
-    /* Active Search State (Overlay/Dropdown) */
-    .header__search.active {
-      display: flex; /* Show when toggled */
+    /* 2. Hide the Search Bar initially */
+    .header__search {
+      display: none; /* FORCE HIDE IT until toggled */
       position: absolute;
       top: 100%; left: 0; width: 100%; z-index: 20;
       background: rgba(0, 0, 0, 0.9);
       border-radius: 0; padding: 15px 20px;
       border: none; border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-      /* Animation */
+
+      /* Animation prep */
+      opacity: 0; transform: translateY(-10px);
+      transition: all 0.3s ease;
+    }
+
+    /* 3. Show Search Bar when Active class is added by JS */
+    .header__search.active {
+      display: flex; /* Bring it back */
+      opacity: 1; visibility: visible; transform: translateY(0);
       animation: slideDown 0.3s ease forwards;
     }
 
@@ -243,7 +253,7 @@
       to { opacity: 1; transform: translateY(0); }
     }
 
-    .search-close-mobile { display: block; }
+    .search-close-mobile { display: block; background: none; border: none; color: white; cursor: pointer; margin-left: 5px; }
 
     /* Mobile Logo */
     .header__logo-image { width: 80px; }
