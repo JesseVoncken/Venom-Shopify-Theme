@@ -11,6 +11,14 @@
   "name": "t:sections.header.name",
   "type": "header",
   "sections": {
+    "header": {
+      "type": "header",
+      "settings": {
+        "logo": "shopify://shop_images/Venom_logo.svg",
+        "logo_width": 100,
+        "menu": "main-menu"
+      }
+    },
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
@@ -34,14 +42,6 @@
         "show_social": true,
         "enable_country_selector": true,
         "enable_language_selector": false
-      }
-    },
-    "header": {
-      "type": "header",
-      "settings": {
-        "logo": "shopify://shop_images/Venom_logo.svg",
-        "logo_width": 100,
-        "menu": "main-menu"
       }
     }
   },
