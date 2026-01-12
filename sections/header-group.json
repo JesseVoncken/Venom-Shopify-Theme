@@ -14,6 +14,20 @@
     "announcement-bar": {
       "type": "announcement-bar",
       "blocks": {
+        "announcement_KfT4Pr": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        },
+        "announcement_Ux6a8c": {
+          "type": "announcement",
+          "settings": {
+            "text": "Welcome to our store",
+            "link": ""
+          }
+        },
         "announcement-bar-0": {
           "type": "announcement",
           "settings": {
@@ -23,6 +37,8 @@
         }
       },
       "block_order": [
+        "announcement_KfT4Pr",
+        "announcement_Ux6a8c",
         "announcement-bar-0"
       ],
       "custom_css": [],
