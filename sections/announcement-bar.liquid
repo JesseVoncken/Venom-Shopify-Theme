@@ -20,7 +20,8 @@
 
 <div
   class="utility-bar color-{{ section.settings.color_scheme }} gradient{% if section.settings.show_line_separator and section.blocks.size > 0 %} utility-bar--bottom-border{% elsif section.settings.show_line_separator and section.settings.show_social and social_icons%} utility-bar--bottom-border-social-only{% endif %}{% if section.settings.enable_country_selector or section.settings.enable_language_selector %} header-localization{% endif %}"
-  style="position: relative; z-index: 50;" 
+  style="position: relative; z-index: 51;"
+  id="AnnouncementBar-{{ section.id }}"
 >
   <div class="page-width utility-bar__grid{% if announcement_bar and language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--3-col{% elsif language_country_selector or section.settings.show_social and social_icons %} utility-bar__grid--2-col{% endif %}">
     {%- if section.settings.show_social and social_icons -%}
@@ -164,16 +165,44 @@
 </div>
 
 <style>
-  /* FIX: Ensure announcement bar sits on top of absolute header */
+  /* Ensure announcement bar sits on TOP of the fixed header */
   .announcement-bar-section {
     position: relative;
-    z-index: 50; /* Higher than header's z-index (usually 10) */
+    z-index: 51; /* Header is usually 10-50, this must be higher */
   }
-  
-  /* Optional: Ensure header below knows to start AFTER this */
-  /* If the header is overlapping the top of the page content, 
-     adding 'position: relative' to this section usually fixes stacking context */
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    // 1. Find the elements
+    const header = document.querySelector('.custom-header');
+    const annBar = document.querySelector('#AnnouncementBar-{{ section.id }}');
+
+    // Only run if both exist
+    if (header && annBar) {
+      // Function to push header down based on scroll position
+      const adjustHeaderPosition = () => {
+        const barHeight = annBar.offsetHeight;
+        const scrollY = window.scrollY;
+
+        // If scrolled LESS than the bar height, push header down by the remainder
+        if (scrollY < barHeight) {
+          header.style.top = barHeight - scrollY + 'px';
+        } else {
+          // If scrolled PAST the bar, header sticks to top (0)
+          header.style.top = '0px';
+        }
+      };
+
+      // Run on scroll and resize
+      window.addEventListener('scroll', adjustHeaderPosition);
+      window.addEventListener('resize', adjustHeaderPosition);
+
+      // Run immediately on load
+      adjustHeaderPosition();
+    }
+  });
+</script>
 
 {% schema %}
 {
@@ -199,13 +228,13 @@
       "unit": "s",
       "label": "t:sections.announcement-bar.settings.change_slides_speed.label",
       "default": 5
-    },    
+    },
     {
       "type": "color_scheme",
       "id": "color_scheme",
       "label": "t:sections.all.colors.label",
       "default": "scheme-4"
-    },  
+    },
     {
       "type": "checkbox",
       "id": "show_line_separator",
@@ -218,8 +247,8 @@
     },
     {
       "type": "paragraph",
-         "content": "t:sections.announcement-bar.settings.paragraph.content"
-    },             
+      "content": "t:sections.announcement-bar.settings.paragraph.content"
+    },
     {
       "type": "checkbox",
       "id": "show_social",
