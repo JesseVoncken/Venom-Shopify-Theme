@@ -1,6 +1,6 @@
 {% comment %}
-  Section: New Releases Grid with Hover Add to Cart
-  Description: Dynamic grid sizing and custom background color with a hover ATC button.
+  Section: New Releases Grid with Hover Add to Cart (AJAX)
+  Description: Dynamic grid sizing and custom background color with an asynchronous hover ATC button.
 {% endcomment %}
 
 {%- liquid
@@ -107,7 +107,7 @@
             </a>
 
             <div class="product-card__atc-wrapper">
-              {%- form 'product', product -%}
+              {%- form 'product', product, class: 'quick-add-form' -%}
                 <input type="hidden" name="id" value="{{ product.selected_or_first_available_variant.id }}">
                 <button 
                   type="submit" 
@@ -402,6 +402,74 @@
     }
   }
 </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', function() {
+    const quickAddForms = document.querySelectorAll('.quick-add-form');
+
+    quickAddForms.forEach(form => {
+      form.addEventListener('submit', function(e) {
+        e.preventDefault(); // Stop the redirect
+
+        const btn = form.querySelector('.product-card__atc-btn');
+        const originalText = btn.innerHTML;
+        
+        // Show loading state
+        btn.innerHTML = 'ADDING...';
+        btn.disabled = true;
+
+        const formData = new FormData(form);
+
+        // Send data to Shopify Cart API
+        fetch(window.Shopify.routes.root + 'cart/add.js', {
+          method: 'POST',
+          body: formData
+        })
+        .then(response => {
+          if (!response.ok) throw new Error('Network response was not ok');
+          return response.json();
+        })
+        .then(data => {
+          // Success State
+          btn.innerHTML = 'ADDED!';
+          btn.style.backgroundColor = '#4cd964'; // Turn green temporarily
+
+          // Update Header Cart Count (Fetches the new cart total)
+          fetch(window.Shopify.routes.root + 'cart.js')
+            .then(res => res.json())
+            .then(cart => {
+              const bubbleCount = document.querySelector('.cart-count-bubble span');
+              if (bubbleCount) {
+                bubbleCount.innerHTML = cart.item_count;
+              } else {
+                // If bubble doesn't exist yet, we'd need to create it, but usually standard 
+                // shopify themes trigger an event we can dispatch:
+                document.dispatchEvent(new CustomEvent('cart:updated', { detail: { cart } }));
+              }
+            });
+
+          // Reset button after 2 seconds
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = '';
+            btn.disabled = false;
+          }, 2000);
+        })
+        .catch(error => {
+          console.error('Error:', error);
+          btn.innerHTML = 'ERROR';
+          btn.style.backgroundColor = '#ff3b30'; // Turn red on error
+          
+          setTimeout(() => {
+            btn.innerHTML = originalText;
+            btn.style.backgroundColor = '';
+            btn.disabled = false;
+          }, 2000);
+        });
+      });
+    });
+  });
+</script>
 
 {% schema %}
 {
